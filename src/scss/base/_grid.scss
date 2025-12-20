@@ -1,0 +1,159 @@
+@use "variables";
+/* ==========================================================================
+   GRID SYSTEM
+   12-column CSS Grid — static & WordPress friendly
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   CONFIG
+   -------------------------------------------------------------------------- */
+
+$grid-columns: 12;
+$grid-gap: 10px;
+
+$container-max-width: variables.$container-width;
+$container-padding: 20px;
+
+/* Breakpoints */
+$bp-desktop: 1200px;
+$bp-tablet: 1024px;
+$bp-mobile: 768px;
+
+/* --------------------------------------------------------------------------
+   CONTAINER
+   -------------------------------------------------------------------------- */
+
+.container {
+  max-width: $container-max-width;
+  margin-inline: auto;
+  padding-inline: $container-padding;
+}
+
+/* Optional container sizes */
+.container--narrow {
+  max-width: 1080px;
+}
+
+.container--wide {
+  max-width: 1600px;
+}
+
+/* --------------------------------------------------------------------------
+   GRID
+   -------------------------------------------------------------------------- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat($grid-columns, 1fr);
+  gap: $grid-gap;
+
+  /* Default behavior */
+  align-items: start;
+  justify-items: stretch;
+}
+
+/* --------------------------------------------------------------------------
+   GRID MODIFIERS (container-level)
+   -------------------------------------------------------------------------- */
+
+/* Vertical alignment */
+.grid--start    { align-items: start; }
+.grid--center   { align-items: center; }
+.grid--end      { align-items: end; }
+.grid--stretch  { align-items: stretch; }
+
+/* Horizontal item alignment */
+.grid--items-start   { justify-items: start; }
+.grid--items-center  { justify-items: center; }
+.grid--items-end     { justify-items: end; }
+.grid--items-stretch { justify-items: stretch; }
+
+/* Content alignment */
+.grid--content-start   { align-content: start; }
+.grid--content-center  { align-content: center; }
+.grid--content-end     { align-content: end; }
+.grid--content-between { align-content: space-between; }
+
+/* Shorthand helpers */
+.grid--place-center {
+  place-items: center;
+}
+
+/* Layout presets */
+.grid--hero {
+  min-height: 80vh;
+  align-items: center;
+}
+
+.grid--no-gap {
+  gap: 0;
+}
+
+/* --------------------------------------------------------------------------
+   COLUMNS
+   -------------------------------------------------------------------------- */
+
+@for $i from 1 through $grid-columns {
+  .col-#{$i} {
+    grid-column: span #{$i};
+  }
+}
+
+/* Column positioning */
+@for $i from 1 through $grid-columns {
+  .col-start-#{$i} {
+    grid-column-start: #{$i};
+  }
+}
+
+/* --------------------------------------------------------------------------
+   COLUMN ALIGNMENT (child-level)
+   -------------------------------------------------------------------------- */
+
+.self-start   { align-self: start; }
+.self-center  { align-self: center; }
+.self-end     { align-self: end; }
+.self-stretch { align-self: stretch; }
+
+.justify-self-start   { justify-self: start; }
+.justify-self-center  { justify-self: center; }
+.justify-self-end     { justify-self: end; }
+.justify-self-stretch { justify-self: stretch; }
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE
+   -------------------------------------------------------------------------- */
+
+@media (max-width: $bp-tablet) {
+  .grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  /* Stack columns on mobile by default */
+  [class^="col-"] {
+    grid-column: span 4;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   DEBUG (optional)
+   -------------------------------------------------------------------------- */
+
+/*
+.grid--debug {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      rgba(255, 0, 0, 0.1),
+      rgba(255, 0, 0, 0.1) 1fr,
+      transparent 1fr,
+      transparent 2fr
+    );
+}
+*/

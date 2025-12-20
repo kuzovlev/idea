@@ -1,0 +1,51 @@
+@use "../base/variables";
+
+.button_link{
+  padding: 3px 3px 3px 20px;
+  background: white;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 14px;
+  line-height: 100%;
+  .square_link{
+    background: variables.$bg-blue;
+    border-radius: 7px;
+    width: 50px;
+    height: 54px;
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    .arrow_icon{
+      position: absolute;
+      top:50%;
+      left:50%;
+      transition: all 0.4s ease-out;
+      width: 12px;
+      height: 12px;
+      &.first_arrow{
+        transform: translate3d(-50%, -50%, 0px);
+      }
+      &.second_arrow{
+        transition-delay: 0.12s;
+        transform: translate3d(-300%, 195%, 0px)
+      }
+    }
+  }
+  &:hover{
+    .square_link{
+      .arrow_icon{
+        &.first_arrow{
+          transform: translate3d(200%, -335%, 0);
+        }
+        &.second_arrow{
+          transform: translate3d(-50%, -50%, 0px);
+        }
+      }
+    }
+  }
+}

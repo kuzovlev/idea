@@ -1,0 +1,835 @@
+@charset "UTF-8";
+/* ==========================================================================
+   GRID SYSTEM
+   12-column CSS Grid — static & WordPress friendly
+   ========================================================================== */
+/* --------------------------------------------------------------------------
+   CONFIG
+   -------------------------------------------------------------------------- */
+/* Breakpoints */
+/* --------------------------------------------------------------------------
+   CONTAINER
+   -------------------------------------------------------------------------- */
+.container {
+  max-width: 1360px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* Optional container sizes */
+.container--narrow {
+  max-width: 1080px;
+}
+
+.container--wide {
+  max-width: 1600px;
+}
+
+/* --------------------------------------------------------------------------
+   GRID
+   -------------------------------------------------------------------------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 10px;
+  /* Default behavior */
+  align-items: start;
+  justify-items: stretch;
+}
+
+/* --------------------------------------------------------------------------
+   GRID MODIFIERS (container-level)
+   -------------------------------------------------------------------------- */
+/* Vertical alignment */
+.grid--start {
+  align-items: start;
+}
+
+.grid--center {
+  align-items: center;
+}
+
+.grid--end {
+  align-items: end;
+}
+
+.grid--stretch {
+  align-items: stretch;
+}
+
+/* Horizontal item alignment */
+.grid--items-start {
+  justify-items: start;
+}
+
+.grid--items-center {
+  justify-items: center;
+}
+
+.grid--items-end {
+  justify-items: end;
+}
+
+.grid--items-stretch {
+  justify-items: stretch;
+}
+
+/* Content alignment */
+.grid--content-start {
+  align-content: start;
+}
+
+.grid--content-center {
+  align-content: center;
+}
+
+.grid--content-end {
+  align-content: end;
+}
+
+.grid--content-between {
+  align-content: space-between;
+}
+
+/* Shorthand helpers */
+.grid--place-center {
+  place-items: center;
+}
+
+/* Layout presets */
+.grid--hero {
+  min-height: 80vh;
+  align-items: center;
+}
+
+.grid--no-gap {
+  gap: 0;
+}
+
+/* --------------------------------------------------------------------------
+   COLUMNS
+   -------------------------------------------------------------------------- */
+.col-1 {
+  grid-column: span 1;
+}
+
+.col-2 {
+  grid-column: span 2;
+}
+
+.col-3 {
+  grid-column: span 3;
+}
+
+.col-4 {
+  grid-column: span 4;
+}
+
+.col-5 {
+  grid-column: span 5;
+}
+
+.col-6 {
+  grid-column: span 6;
+}
+
+.col-7 {
+  grid-column: span 7;
+}
+
+.col-8 {
+  grid-column: span 8;
+}
+
+.col-9 {
+  grid-column: span 9;
+}
+
+.col-10 {
+  grid-column: span 10;
+}
+
+.col-11 {
+  grid-column: span 11;
+}
+
+.col-12 {
+  grid-column: span 12;
+}
+
+/* Column positioning */
+.col-start-1 {
+  grid-column-start: 1;
+}
+
+.col-start-2 {
+  grid-column-start: 2;
+}
+
+.col-start-3 {
+  grid-column-start: 3;
+}
+
+.col-start-4 {
+  grid-column-start: 4;
+}
+
+.col-start-5 {
+  grid-column-start: 5;
+}
+
+.col-start-6 {
+  grid-column-start: 6;
+}
+
+.col-start-7 {
+  grid-column-start: 7;
+}
+
+.col-start-8 {
+  grid-column-start: 8;
+}
+
+.col-start-9 {
+  grid-column-start: 9;
+}
+
+.col-start-10 {
+  grid-column-start: 10;
+}
+
+.col-start-11 {
+  grid-column-start: 11;
+}
+
+.col-start-12 {
+  grid-column-start: 12;
+}
+
+/* --------------------------------------------------------------------------
+   COLUMN ALIGNMENT (child-level)
+   -------------------------------------------------------------------------- */
+.self-start {
+  align-self: start;
+}
+
+.self-center {
+  align-self: center;
+}
+
+.self-end {
+  align-self: end;
+}
+
+.self-stretch {
+  align-self: stretch;
+}
+
+.justify-self-start {
+  justify-self: start;
+}
+
+.justify-self-center {
+  justify-self: center;
+}
+
+.justify-self-end {
+  justify-self: end;
+}
+
+.justify-self-stretch {
+  justify-self: stretch;
+}
+
+/* --------------------------------------------------------------------------
+   RESPONSIVE
+   -------------------------------------------------------------------------- */
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(8, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  /* Stack columns on mobile by default */
+  [class^=col-] {
+    grid-column: span 4;
+  }
+}
+/* --------------------------------------------------------------------------
+   DEBUG (optional)
+   -------------------------------------------------------------------------- */
+/*
+.grid--debug {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      rgba(255, 0, 0, 0.1),
+      rgba(255, 0, 0, 0.1) 1fr,
+      transparent 1fr,
+      transparent 2fr
+    );
+}
+*/
+@font-face {
+  font-family: "NeueMachina";
+  src: url("../fonts/PPNeueMachina-PlainRegular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "NeueMachina";
+  src: url("../fonts/PPNeueMachina-InktrapUltraboldItalic.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+main, menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, main, menu, nav, section {
+  display: block;
+}
+
+/* HTML5 hidden-attribute fix for newer browsers */
+*[hidden] {
+  display: none;
+}
+
+body {
+  line-height: 1;
+}
+
+menu, ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* =========================================================
+   Flex Utilities
+   ========================================================= */
+/* -------------------------
+   Display
+   ------------------------- */
+.flex {
+  display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+/* -------------------------
+   Direction
+   ------------------------- */
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-column-reverse {
+  flex-direction: column-reverse;
+}
+
+/* -------------------------
+   Wrapping
+   ------------------------- */
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.flex-wrap-reverse {
+  flex-wrap: wrap-reverse;
+}
+
+/* -------------------------
+   Justify content (main axis)
+   ------------------------- */
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
+/* -------------------------
+   Align items (cross axis)
+   ------------------------- */
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.items-stretch {
+  align-items: stretch;
+}
+
+.items-baseline {
+  align-items: baseline;
+}
+
+/* -------------------------
+   Align content (multi-line)
+   ------------------------- */
+.content-start {
+  align-content: flex-start;
+}
+
+.content-center {
+  align-content: center;
+}
+
+.content-end {
+  align-content: flex-end;
+}
+
+.content-between {
+  align-content: space-between;
+}
+
+.content-around {
+  align-content: space-around;
+}
+
+.content-stretch {
+  align-content: stretch;
+}
+
+/* -------------------------
+   Gap
+   ------------------------- */
+.gap-0 {
+  gap: 0;
+}
+
+.gap-xs {
+  gap: 0.25rem;
+}
+
+.gap-sm {
+  gap: 0.5rem;
+}
+
+.gap-md {
+  gap: 1rem;
+}
+
+.gap-lg {
+  gap: 1.5rem;
+}
+
+.gap-xl {
+  gap: 2rem;
+}
+
+/* -------------------------
+   Flex items
+   ------------------------- */
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.flex-auto {
+  flex: 1 1 auto;
+}
+
+.flex-initial {
+  flex: 0 1 auto;
+}
+
+.flex-none {
+  flex: none;
+}
+
+/* -------------------------
+   Grow / Shrink
+   ------------------------- */
+.grow {
+  flex-grow: 1;
+}
+
+.grow-0 {
+  flex-grow: 0;
+}
+
+.shrink {
+  flex-shrink: 1;
+}
+
+.shrink-0 {
+  flex-shrink: 0;
+}
+
+/* -------------------------
+   Self alignment
+   ------------------------- */
+.self-auto {
+  align-self: auto;
+}
+
+.self-start {
+  align-self: flex-start;
+}
+
+.self-center {
+  align-self: center;
+}
+
+.self-end {
+  align-self: flex-end;
+}
+
+.self-stretch {
+  align-self: stretch;
+}
+
+.button_link {
+  padding: 3px 3px 3px 20px;
+  background: white;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+  font-size: 14px;
+  line-height: 100%;
+}
+.button_link .square_link {
+  background: #A0D7FF;
+  border-radius: 7px;
+  width: 50px;
+  height: 54px;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.button_link .square_link .arrow_icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transition: all 0.4s ease-out;
+  width: 12px;
+  height: 12px;
+}
+.button_link .square_link .arrow_icon.first_arrow {
+  transform: translate3d(-50%, -50%, 0px);
+}
+.button_link .square_link .arrow_icon.second_arrow {
+  transition-delay: 0.12s;
+  transform: translate3d(-300%, 195%, 0px);
+}
+.button_link:hover .square_link .arrow_icon.first_arrow {
+  transform: translate3d(200%, -335%, 0);
+}
+.button_link:hover .square_link .arrow_icon.second_arrow {
+  transform: translate3d(-50%, -50%, 0px);
+}
+
+.container-regular {
+  width: 100%;
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.padding-global {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.lang-switcher {
+  position: relative;
+  font-family: Inter, sans-serif;
+}
+.lang-switcher details {
+  position: relative;
+  height: 100%;
+  border-radius: 10px;
+  background: white;
+  display: flex;
+  align-items: center;
+}
+.lang-switcher details:not([open]) ul {
+  display: none;
+}
+.lang-switcher summary {
+  padding: 0 20px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  list-style: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+.lang-switcher summary::-webkit-details-marker {
+  display: none;
+}
+.lang-switcher svg {
+  width: 10px;
+  height: 6px;
+}
+.lang-switcher ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin: 6px 0 0;
+  padding: 6px 0;
+  list-style: none;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+.lang-switcher li a {
+  display: block;
+  padding: 6px 12px;
+  font-size: 13px;
+  text-decoration: none;
+  color: #000;
+}
+.lang-switcher li a:hover {
+  background: #f2f2f2;
+}
+@media (max-width: 1140px) {
+  .lang-switcher.desktop {
+    display: none;
+  }
+}
+.lang-switcher.mobile {
+  display: none;
+}
+
+header .navbar_logo {
+  display: block;
+  height: 40px;
+}
+header .navbar_logo img {
+  height: 100%;
+}
+
+@media (max-width: 1140px) {
+  header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between;
+    background: white;
+    padding: 0 15px;
+    border-radius: 10px;
+    height: 60px;
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 2000;
+  }
+  header .navbar_logo {
+    height: 27px;
+  }
+  .burger {
+    display: block;
+    z-index: 1001;
+  }
+  header > .button_link {
+    display: none;
+  }
+  .nav-wrapper {
+    position: fixed;
+    inset: 0;
+    background: #fff;
+    padding: 6rem 2rem 2rem;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  .nav-wrapper.is-open {
+    transform: translateX(0);
+    background: #ECEAEA;
+  }
+  .nav-list_sections {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .cur-page,
+  .nav-list_divider {
+    display: none;
+  }
+}
+.burger {
+  position: relative;
+  z-index: 2100;
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.burger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  margin: 5px 0;
+  background: currentColor;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+@media (max-width: 1140px) {
+  .burger {
+    display: block;
+    z-index: 1001;
+  }
+}
+.nav-wrapper.is-open ~ .burger span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.nav-wrapper.is-open ~ .burger span:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-wrapper.is-open ~ .burger span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.nav-wrapper {
+  display: flex;
+  gap: 10px;
+}
+.nav-wrapper .nav-list {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  padding: 0 20px;
+  align-items: center;
+  font-size: 14px;
+  line-height: 112%;
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+}
+.nav-wrapper .nav-list .cur-page {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+.nav-wrapper .nav-list .cur-page:before {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: rgba(100, 8, 50, 0.5019607843);
+}
+.nav-wrapper .nav-list .nav-list_divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(100, 8, 50, 0.5019607843);
+}
+.nav-wrapper .nav-list .nav-list_sections {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.nav-wrapper .nav-list .nav-list_sections li {
+  content: counter(nav, decimal-leading-zero);
+  display: flex;
+  gap: 3px;
+  counter-increment: nav;
+}
+.nav-wrapper .nav-list .nav-list_sections li:before {
+  font-family: "Inter", sans-serif;
+  font-size: 9px;
+  line-height: 1;
+  content: counter(nav, decimal-leading-zero);
+  color: rgba(100, 8, 50, 0.5019607843);
+  letter-spacing: -0.07em;
+  font-variant-position: super;
+}
+
+body {
+  font-family: "NeueMachina", sans-serif;
+  font-size: 16px;
+  line-height: 130%;
+  color: #000;
+}
+
+/*# sourceMappingURL=style.css.map */

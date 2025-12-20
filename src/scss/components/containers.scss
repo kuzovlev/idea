@@ -1,0 +1,12 @@
+@use "../base/variables";
+
+.container-regular{
+  width: 100%;
+  max-width: variables.$container-width;
+  margin: 0 auto;
+}
+
+.padding-global{
+  padding-left: 15px;
+  padding-right: 15px;
+}
