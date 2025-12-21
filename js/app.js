@@ -1,7 +1,8 @@
 const burger = document.querySelector('.burger');
-const navWrapper = document.querySelector('.nav-wrapper');
+const mobileNav = document.querySelector('.mobile-nav');
 
 burger.addEventListener('click', () => {
-  const isOpen = navWrapper.classList.toggle('is-open');
-  burger.setAttribute('aria-expanded', isOpen);
+  const open = mobileNav.classList.toggle('is-open');
+  document.body.classList.toggle('nav-open', open);
+  burger.setAttribute('aria-expanded', open);
 });
