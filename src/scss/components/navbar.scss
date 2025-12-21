@@ -1,16 +1,33 @@
 /* ========================= */
 /* Navigation (Header + Nav) */
 /* ========================= */
+
+@media (min-width: 1141px) {
+  .logo-section img {
+    transform-origin: left top;
+    will-change: transform;
+    position: relative;
+    z-index: 9999;
+  }
+
+  .navbar_logo svg {
+    opacity: 0;
+  }
+}
+
 .nav-block{
   position: sticky;
   top: 20px;
+  z-index: 99999;
 }
 header {
+  color: black;
   .navbar_logo {
     display: block;
     height: 40px;
+    color: #A0D7FF;
 
-    img {
+    svg {
       height: 100%;
     }
   }
@@ -78,6 +95,7 @@ header {
         &:before {
           font-family: "Inter", sans-serif;
           font-size: 9px;
+          line-height: 1;
           content: counter(nav, decimal-leading-zero);
           color: #64083280;
           letter-spacing: -0.07em;
