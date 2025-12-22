@@ -283,7 +283,7 @@
 @font-face {
   font-family: "NeueMachina";
   src: url("../fonts/PPNeueMachina-InktrapUltraboldItalic.woff2") format("woff2");
-  font-weight: 700;
+  font-weight: 800;
   font-style: normal;
   font-display: swap;
 }
@@ -686,6 +686,7 @@ a {
     will-change: transform;
     position: relative;
     z-index: 9999;
+    width: 100%;
   }
   .navbar_logo svg {
     opacity: 0;
@@ -693,12 +694,13 @@ a {
 }
 .nav-block {
   position: sticky;
-  top: 20px;
+  top: 0px;
   z-index: 99999;
 }
 
 header {
   color: black;
+  transform: translateY(20px);
 }
 header .navbar_logo {
   display: block;
@@ -981,6 +983,7 @@ body.nav-open {
 }
 
 .fullsize-video-bg {
+  margin-top: -60px;
   padding-top: 20px;
   position: relative;
   color: white;
@@ -1022,21 +1025,25 @@ video {
 
 .fullsize-video-bg .inner {
   display: table;
-  width: 100%;
-  max-width: 24em;
   height: 100%;
   margin: 0 auto;
-  padding: 0;
   position: relative;
   z-index: 2;
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
 }
 
-.fullsize-video-bg .inner > div {
+.fullsize-video-bg .inner > .hero-text {
   text-align: center;
   display: table-cell;
   vertical-align: middle;
-  padding: 0 2em;
+  text-transform: uppercase;
+  font-size: 74px;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-weight: 800;
+}
+.fullsize-video-bg .inner > .hero-text .line {
+  display: block;
+  overflow: hidden; /* optional for clip-style effects */
 }
 
 body {
