@@ -8,6 +8,7 @@
     will-change: transform;
     position: relative;
     z-index: 9999;
+    width: 100%;
   }
 
   .navbar_logo svg {
@@ -17,11 +18,12 @@
 
 .nav-block{
   position: sticky;
-  top: 20px;
+  top: 00px;
   z-index: 99999;
 }
 header {
   color: black;
+  transform: translateY(20px);
   .navbar_logo {
     display: block;
     height: 40px;

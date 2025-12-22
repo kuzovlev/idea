@@ -1,5 +1,12 @@
 const burger = document.querySelector('.burger');
 const mobileNav = document.querySelector('.mobile-nav');
+// Always load page at top
+if ("scrollRestoration" in history) {
+  history.scrollRestoration = "manual";
+}
+window.addEventListener("load", () => {
+  window.scrollTo(0, 0);
+});
 
 burger.addEventListener('click', () => {
   const open = mobileNav.classList.toggle('is-open');
@@ -19,71 +26,70 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 document.addEventListener("DOMContentLoaded", (event) => {
   gsap.registerPlugin(ScrollTrigger);
-
+  // Measure once images are loaded
   if (window.matchMedia("(min-width: 1141px)").matches) {
 
-    // Measure once images are loaded
-    if (window.matchMedia("(min-width: 1141px)").matches) {
+    const bigLogo = document.querySelector(".logo-section img");
+    const navLogo = document.querySelector(".navbar_logo svg");
+    const navBlock = document.querySelector(".nav-block");
 
-      const bigLogo = document.querySelector(".logo-section img");
-      const navLogo = document.querySelector(".navbar_logo svg");
-      const navBlock = document.querySelector(".nav-block");
+    window.addEventListener("load", () => {
 
-      window.addEventListener("load", () => {
+      const navBlockRect = navBlock.getBoundingClientRect();
+      const scrollEnd =
+        navBlockRect.top + window.scrollY - 20;
 
-        // const bigRect = bigLogo.getBoundingClientRect();
-        // const navRect = navLogo.getBoundingClientRect();
-        const navBlockRect = navBlock.getBoundingClientRect();
-        //
-        // const deltaX = navRect.left - bigRect.left;
-        // const deltaY = navRect.top - bigRect.top;
-        // const scale = navRect.height / bigRect.height;
-        //
-        // 👇 critical part: calculate scroll distance until sticky engages
-        const scrollEnd =
-          navBlockRect.top + window.scrollY - 20;
+      gsap.set(bigLogo, {clearProps: "transform"});
 
-        // Clear transforms before measuring
-        gsap.set(bigLogo, {clearProps: "transform"});
+      const bigRect = bigLogo.getBoundingClientRect();
+      const navRect = navLogo.getBoundingClientRect();
 
-        const bigRect = bigLogo.getBoundingClientRect();
-        const navRect = navLogo.getBoundingClientRect();
+      const scale = navRect.width / bigRect.width;
 
-// SCALE BY WIDTH — critical fix
-        const scale = navRect.width / bigRect.width;
+      const deltaX = navRect.left - bigRect.left;
+      const deltaY = navRect.top - bigRect.top;
 
-// Position deltas
-        const deltaX = navRect.left - bigRect.left;
-        const deltaY = navRect.top - bigRect.top;
-
-        gsap.to(bigLogo, {
-          scrollTrigger: {
-            start: 0,
-            end: scrollEnd,
-            scrub: true
-          },
-          x: deltaX,
-          y: deltaY,
-          scale: scale,
-          ease: "none"
-        });
-
-        // Visibility swap EXACTLY when sticky starts
-        ScrollTrigger.create({
-          start: scrollEnd,
-          onEnter: () => {
-            navLogo.style.opacity = "1";
-            bigLogo.style.opacity = "0";
-          },
-          onLeaveBack: () => {
-            navLogo.style.opacity = "0";
-            bigLogo.style.opacity = "1";
-          }
-        });
-
+      gsap.to(bigLogo, {
+        scrollTrigger: {
+          start: 0,
+          end: scrollEnd,
+          scrub: true
+        },
+        x: deltaX,
+        y: deltaY,
+        scale: scale,
+        ease: "none"
       });
-    }
+
+      ScrollTrigger.create({
+        start: scrollEnd,
+        onEnter: () => {
+          navLogo.style.opacity = "1";
+          bigLogo.style.opacity = "0";
+        },
+        onLeaveBack: () => {
+          navLogo.style.opacity = "0";
+          bigLogo.style.opacity = "1";
+        }
+      });
+
+    });
   }
+
+
+  const lines = gsap.utils.toArray(".hero-text .line");
+  const xValues = [ -150, 0, 120 ];
+  gsap.to(lines, {
+    x: (i) => xValues[i] ?? 0,
+    duration: 0.6,
+    ease: "power2.out",
+    stagger: 0.05,
+    scrollTrigger: {
+      trigger: ".hero-text",
+      start: "center center",
+      once: true
+    }
+  });
 });
 
 
@@ -100,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function () {
   vid_h_orig = parseInt(video.getAttribute('height'), 10);
 
   window.addEventListener('resize', fitVideo);
-  fitVideo(); // run once on load
+  fitVideo();
 });
 
 function fitVideo() {
@@ -115,12 +121,10 @@ function fitVideo() {
   viewport.style.width = bgWidth + 'px';
   viewport.style.height = bgHeight + 'px';
 
-  // Calculate scale
   var scale_h = bgWidth / vid_w_orig;
   var scale_v = bgHeight / vid_h_orig;
   var scale = Math.max(scale_h, scale_v);
 
-  // Enforce minimum width
   if (scale * vid_w_orig < min_w) {
     scale = min_w / vid_w_orig;
   }
@@ -132,7 +136,6 @@ function fitVideo() {
   video.style.width = videoWidth + 'px';
   video.style.height = videoHeight + 'px';
 
-  // Center video inside viewport
   viewport.scrollLeft = (videoWidth - bgWidth) / 2;
   viewport.scrollTop = (videoHeight - bgHeight) / 2;
 }
