@@ -958,8 +958,8 @@ body.nav-open {
 .logo-section {
   background: #00323C;
   padding-top: 30px;
-  padding-bottom: 130px;
   color: #E1DCD5;
+  height: calc(100vh - 120px);
 }
 .logo-section .transforming-logo {
   padding-bottom: 90px;
