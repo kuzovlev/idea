@@ -32,23 +32,37 @@ document.addEventListener("DOMContentLoaded", (event) => {
     const bigLogo = document.querySelector(".logo-section img");
     const navLogo = document.querySelector(".navbar_logo svg");
     const navBlock = document.querySelector(".nav-block");
+    const header = document.querySelector("header");
 
     window.addEventListener("load", () => {
 
-      const navBlockRect = navBlock.getBoundingClientRect();
-      const scrollEnd =
-        navBlockRect.top + window.scrollY - 20;
+      // -------------------------------------------------
+      // 1. Force header into FINAL position for measuring
+      // -------------------------------------------------
+      gsap.set(header, { y: 20 });
 
-      gsap.set(bigLogo, {clearProps: "transform"});
+      // Measure layout in final visual state
+      const navBlockRect = navBlock.getBoundingClientRect();
+      const scrollEnd = navBlockRect.top + window.scrollY;
+
+      // Reset logo transforms before measuring
+      gsap.set(bigLogo, { clearProps: "transform" });
 
       const bigRect = bigLogo.getBoundingClientRect();
       const navRect = navLogo.getBoundingClientRect();
 
       const scale = navRect.width / bigRect.width;
-
       const deltaX = navRect.left - bigRect.left;
       const deltaY = navRect.top - bigRect.top;
 
+      // -------------------------------------------------
+      // 2. Restore INITIAL header position
+      // -------------------------------------------------
+      gsap.set(header, { y: 90 });
+
+      // -------------------------------------------------
+      // 3. Huge logo scroll animation
+      // -------------------------------------------------
       gsap.to(bigLogo, {
         scrollTrigger: {
           start: 0,
@@ -61,6 +75,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
         ease: "none"
       });
 
+      // -------------------------------------------------
+      // 4. Logo visibility switch
+      // -------------------------------------------------
       ScrollTrigger.create({
         start: scrollEnd,
         onEnter: () => {
@@ -71,6 +88,19 @@ document.addEventListener("DOMContentLoaded", (event) => {
           navLogo.style.opacity = "0";
           bigLogo.style.opacity = "1";
         }
+      });
+
+      // -------------------------------------------------
+      // 5. Header movement (90px → 20px)
+      // -------------------------------------------------
+      gsap.to(header, {
+        scrollTrigger: {
+          start: 0,
+          end: scrollEnd,
+          scrub: true
+        },
+        y: 20,
+        ease: "none"
       });
 
     });
