@@ -1,0 +1,8 @@
+.second-line-heading{
+  display: block;
+  text-align: right;
+  @media (max-width: 1140px) {
+    display: inline;
+    text-align: left;
+  }
+}

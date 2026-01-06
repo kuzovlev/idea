@@ -39,14 +39,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
       // -------------------------------------------------
       // 1. Force header into FINAL position for measuring
       // -------------------------------------------------
-      gsap.set(header, { y: 20 });
+      gsap.set(header, {y: 20});
 
       // Measure layout in final visual state
       const navBlockRect = navBlock.getBoundingClientRect();
       const scrollEnd = navBlockRect.top + window.scrollY;
 
       // Reset logo transforms before measuring
-      gsap.set(bigLogo, { clearProps: "transform" });
+      gsap.set(bigLogo, {clearProps: "transform"});
 
       const bigRect = bigLogo.getBoundingClientRect();
       const navRect = navLogo.getBoundingClientRect();
@@ -58,7 +58,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       // -------------------------------------------------
       // 2. Restore INITIAL header position
       // -------------------------------------------------
-      gsap.set(header, { y: 90 });
+      gsap.set(header, {y: 90});
 
       // -------------------------------------------------
       // 3. Huge logo scroll animation
@@ -106,20 +106,21 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
   }
 
-
-  const lines = gsap.utils.toArray(".hero-text .line");
-  const xValues = [ -150, 0, 120 ];
-  gsap.to(lines, {
-    x: (i) => xValues[i] ?? 0,
-    duration: 0.6,
-    ease: "power2.out",
-    stagger: 0.05,
-    scrollTrigger: {
-      trigger: ".hero-text",
-      start: "center center",
-      once: true
-    }
-  });
+  if (window.matchMedia("(min-width: 768px)").matches) {
+    const lines = gsap.utils.toArray(".hero-text .line");
+    const xValues = [-150, 0, 120];
+    gsap.to(lines, {
+      x: (i) => xValues[i] ?? 0,
+      duration: 0.6,
+      ease: "power2.out",
+      stagger: 0.05,
+      scrollTrigger: {
+        trigger: ".hero-text",
+        start: "center center",
+        once: true
+      }
+    });
+  }
 });
 
 

@@ -32,7 +32,7 @@
       <div class="container-regular">
         <img src="img/logo-huge.svg" class="transforming-logo" alt="logo">
         <div class="grid">
-          <a class="col-8 scroll-down" href="#main-content">Гортай далі
+          <a class="col-8 col-m-4 scroll-down mobile-hide" href="#main-content">Гортай далі
             <img src="img/double-chevron-down.svg" alt="Arrow down"/>
           </a>
           <div class="col-4 logo-section_subtext">Архітектори бізнес подій та подорожей</div>
@@ -56,19 +56,7 @@
               </svg>
             </a>
             <div class="col-6 self-stretch nav-wrapper">
-              <div class="lang-switcher desktop" aria-label="Language selector">
-                <details>
-                  <summary>
-                    Укр
-                    <svg viewBox="0 0 10 6" aria-hidden="true">
-                      <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                    </svg>
-                  </summary>
-                  <ul>
-                    <li><a href="/en/" hreflang="en">ENG</a></li>
-                  </ul>
-                </details>
-              </div>
+              <a href="#" class="button_link lang-switch self-stretch">Eng</a>
               <nav class="nav-list">
                 <div class="cur-page">Головна</div>
                 <div class="nav-list_divider"></div>
@@ -129,33 +117,51 @@
             </div>
           </header>
           <nav class="mobile-nav">
-            <div class="mobile-nav-inner dashes-bottom dashes-top">
-              <div class="cur-page">Головна</div>
-              <ul class="nav-list_sections">
-                <li><a href="#">Про нас</a></li>
-                <li><a href="#">Сервіси</a></li>
-                <li><a href="#">Клієнти</a></li>
-                <li><a href="#">Кейси</a></li>
-                <li><a href="#">Відгуки</a></li>
-              </ul>
+            <div>
+              <div class="mobile-nav-inner dashes-bottom dashes-top">
+                <div class="cur-page">Головна</div>
+                <ul class="nav-list_sections">
+                  <li><a href="#">Про нас</a></li>
+                  <li><a href="#">Сервіси</a></li>
+                  <li><a href="#">Клієнти</a></li>
+                  <li><a href="#">Кейси</a></li>
+                  <li><a href="#">Відгуки</a></li>
+                </ul>
 
+              </div>
+              <a href="#" class="mobile_new-page dashes-bottom">Команда</a>
+              <div class="mobile_contact">
+                <a href="#" class="button_link self-stretch">
+                  <div>Звʼязатися з нами</div>
+                  <div class="square_link">
+                    <div class="arrow_icon first_arrow">
+                      <img
+                        src="img/arrow-nav.svg"
+                        loading="lazy" alt="Arrow black, icon, svg, black"></div>
+                    <div class="arrow_icon second_arrow">
+                      <img
+                        src="img/arrow-nav.svg"
+                        loading="lazy" alt="Arrow black, icon, svg, black"></div>
+                  </div>
+                </a>
+                <a href="#" class="privacy-link">Договір публічної оферти</a>
+              </div>
             </div>
-            <a href="#" class="mobile_new-page dashes-bottom">Команда</a>
-            <div class="mobile_contact">
-              <a href="#" class="button_link self-stretch">
-                <div>Звʼязатися з нами</div>
-                <div class="square_link">
-                  <div class="arrow_icon first_arrow">
-                    <img
-                      src="img/arrow-nav.svg"
-                      loading="lazy" alt="Arrow black, icon, svg, black"></div>
-                  <div class="arrow_icon second_arrow">
-                    <img
-                      src="img/arrow-nav.svg"
-                      loading="lazy" alt="Arrow black, icon, svg, black"></div>
+            <div class="mobile-nav-footer">
+              <div class="mobile-nav-footer_col">
+                <div class="mobile-nav-footer_heading">
+                  <img src="./img/mail-icon.svg" alt="envelope icon">
+                  Mail
                 </div>
-              </a>
-              <a href="#" class="privacy-link">Договір публічної оферти</a>
+                <a href="mailto:welcome@ideatravelsolutions.com">welcome@ideatravelsolutions.com</a>
+              </div>
+              <div class="mobile-nav-footer_col">
+                <div class="mobile-nav-footer_heading">
+                  <img src="./img/phone-icon.svg" alt="Phone icon">
+                  Phone
+                </div>
+                <a href="tel:+38 093 170 29 29"> +38 093 170 29 29</a>
+              </div>
             </div>
           </nav>
         </div>
@@ -172,11 +178,120 @@
       </div>
       <div id="video-viewport">
         <video width="1920" height="1280" autoplay muted loop>
-          <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+          <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                  type="video/mp4"/>
         </video>
       </div>
     </section>
-    <section style="background: #555555; height: 100vh;"></section>
+    <section>
+      <div class="spacer-180 spacer-m-120"></div>
+      <div class="padding-global">
+        <div class="container-regular">
+          <h2>Про нас</h2>
+          <div class="heading-divider"></div>
+          <div class="spacer-100 spacer-m-90"></div>
+          <div class="grid ">
+            <h3 class="col-6  section-title">Місія</h3>
+            <div class="col-6">
+              <p class="text-20">
+                Ми допомагаємо бізнесу досягати своїх цілей, організовуючи ділові подорожі та заходи з максимальною
+                ефективністю, комфортом і увагою до деталей. Наша місія – бути надійним партнером, який оптимізує
+                процеси,
+                економить ресурси та створює рішення, що відповідають унікальним потребам кожного клієнта.
+              </p>
+              <div class="spacer-60 spacer-m-90"></div>
+              <a href="#" class="button_link">
+                <div>Наша команда</div>
+                <div class="square_link">
+                  <div class="arrow_icon first_arrow">
+                    <img src="img/arrow-nav.svg" loading="lazy" alt="Arrow black, icon, svg, black"></div>
+                  <div class="arrow_icon second_arrow">
+                    <img src="img/arrow-nav.svg" loading="lazy" alt="Arrow black, icon, svg, black"></div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spacer-180 spacer-m-120"></div>
+    </section>
+    <section>
+      <div class="spacer-180 spacer-m-120"></div>
+      <div class="padding-global">
+        <div class="container-regular">
+          <h2>Переваги</h2>
+          <div class="heading-divider"></div>
+          <div class="spacer-100 spacer-m-90"></div>
+          <div class="grid">
+            <div class="text-huge font-weight-800 col-12 col-m-6">
+              Ми достеменно розуміємо <br class="burger-hide"><span
+              class="second-line-heading">потреби сучасного бізнесу</span>
+            </div>
+          </div>
+          <div class="spacer-40 spacer-m-20"></div>
+          <div class="grid">
+            <div class="col-6 col-m-7 align-end align-start-m">
+              <p class="text-20">
+                Ми допомагаємо компаніям та їх працівникам досягати більшого за рахунок професійного менеджменту ділових
+                подорожей, конференцій та суміжних процесів. Довірте нам ваші відрядження та заходи і фокусуйтесь на
+                головних задачах бізнесу
+              </p>
+            </div>
+          </div>
+          <div class="spacer-100 spacer-m-90 spacer-s-80"></div>
+          <h3 class="section-title">Гарантуємо кожному клієнту</h3>
+          <div class="spacer-32 spacer-m-30 spacer-s-20"></div>
+          <div class="grid">
+            <div class="advantage-card">
+              <div class="advantage-text">
+                Максимальну увагу
+                до <br>побажань та <br>бізнес потреб
+              </div>
+              <img class="advantage-image" src="./img/adv-image-1.svg" alt="decorative image">
+            </div>
+            <div class="advantage-card">
+              <div class="advantage-text">
+                Прозоре <br>управління <br>
+                процесами
+              </div>
+              <img class="advantage-image" src="./img/adv-image-2.svg" alt="decorative image">
+            </div>
+            <div class="advantage-card">
+              <div class="advantage-text">
+                Оптимізацію <br>
+                витрат
+              </div>
+              <img class="advantage-image" src="./img/adv-image-3.svg" alt="decorative image">
+            </div>
+            <div class="advantage-card">
+              <div class="advantage-text">
+                Високий <br>рівень <br>задоволеності
+              </div>
+              <img class="advantage-image" src="./img/adv-image-4.svg" alt="decorative image">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spacer-180 spacer-m-120"></div>
+      <div class="padding-global">
+        <div class="container-regular">
+          <h2>Сервіси</h2>
+          <div class="heading-divider"></div>
+          <div class="spacer-100 spacer-m-90"></div>
+          <div class="grid ">
+            <h3 class="col-6  section-title">IDEAльні подорожі <br>та івенти</h3>
+            <div class="col-6">
+              <p class="text-20">
+                Ми допомагаємо компаніям та їх працівникам досягати більшого за рахунок професійного менеджменту ділових
+                подорожей та конференцій. Довірте нам ваші відрядження та заходи і фокусуйтесь на головних задачах
+                бізнесу
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="spacer-180 spacer-m-120"></div>
+    </section>
     <section style="background: #640832; height: 100vh;" id="third"></section>
   </main>
 </div>

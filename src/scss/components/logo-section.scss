@@ -6,6 +6,7 @@
   height: calc(100vh - 210px);
   .transforming-logo {
     padding-bottom: 90px;
+    max-width: 100%;
   }
   .scroll-down{
     font-size: 12px;
@@ -23,5 +24,10 @@
     font-size: 36px;
     letter-spacing: -.05em;
     line-height: 112%;
+  }
+  @media (max-width: 1140px) {
+    padding-top: 105px;
+    height: auto;
+    padding-bottom: 112px;
   }
 }

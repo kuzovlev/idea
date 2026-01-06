@@ -98,7 +98,20 @@ $bp-mobile: 768px;
     grid-column: span #{$i};
   }
 }
-
+@media (max-width: 1024px) {
+  @for $i from 1 through $grid-columns {
+    .col-m-#{$i} {
+      grid-column: span #{$i};
+    }
+  }
+}
+@media (max-width: 567px) {
+  @for $i from 1 through $grid-columns {
+    .col-s-#{$i} {
+      grid-column: span #{$i};
+    }
+  }
+}
 /* Column positioning */
 @for $i from 1 through $grid-columns {
   .col-start-#{$i} {
@@ -119,6 +132,20 @@ $bp-mobile: 768px;
 .justify-self-center  { justify-self: center; }
 .justify-self-end     { justify-self: end; }
 .justify-self-stretch { justify-self: stretch; }
+
+.align-end {
+  grid-column-end: -1;
+}
+@media (max-width: 1024px) {
+  .align-start-m {
+    grid-column-end: auto;
+  }
+}
+@media (max-width: 567px) {
+  .align-start-s {
+    grid-column-end: auto;
+  }
+}
 
 /* --------------------------------------------------------------------------
    RESPONSIVE

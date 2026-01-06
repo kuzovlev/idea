@@ -1,0 +1,9 @@
+.heading-divider {
+  margin-top: 10px;
+  border: 5px solid;
+  border-image: repeating-linear-gradient(
+      90deg,
+      rgba(100, 8, 50, .5) 0 1px,
+      transparent 1px 9px
+  ) 5;
+}
