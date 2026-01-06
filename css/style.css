@@ -1428,6 +1428,21 @@ h2 {
   }
 }
 
+@media (min-width: 1024px) {
+  .show-desktop {
+    display: block !important;
+  }
+}
+
+.tablet-show {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .tablet-show {
+    display: block !important;
+  }
+}
+
 .button_link {
   padding: 3px 3px 3px 20px;
   background: white;
@@ -1998,6 +2013,88 @@ body.nav-open {
     align-self: center;
   }
 }
+.branch-card {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+.branch-card .branch-card_indicator {
+  display: none;
+  transition: all 0.3s ease-out;
+}
+@media (max-width: 1023px) {
+  .branch-card .branch-card_indicator {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 37px;
+    height: 37px;
+    border-radius: 37px;
+  }
+}
+.branch-card .branch-name {
+  text-transform: uppercase;
+  font-size: 20px;
+  line-height: 112%;
+  letter-spacing: 0;
+  padding: 10px 10px 5px 10px;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+.branch-card:nth-child(even) .branch-name {
+  background: #E1DCD5;
+  color: #640832;
+}
+.branch-card:nth-child(even) .branch-description {
+  background: url("../img/Union-figure-people-blue.svg") no-repeat left center;
+  background-size: contain;
+  color: #000000;
+}
+.branch-card:nth-child(odd) .branch-name {
+  background: #A0D7FF;
+  color: #00323C;
+}
+.branch-card:nth-child(odd) .branch-description {
+  background: url("../img/union-figure-people-yellow.svg") no-repeat left center;
+  background-size: contain;
+  color: #640832;
+}
+.branch-card:hover .branch-description {
+  transform: translateX(0);
+}
+.branch-card:hover .branch-card_indicator {
+  transform: rotate(45deg);
+}
+.branch-card .branch-card_image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.branch-card .branch-description {
+  position: absolute;
+  max-width: 322px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  bottom: 10px;
+  padding: 20px 48px 20px 20px;
+  transition: all 0.5s ease-out;
+  transform: translateX(-100%);
+}
+.branch-card .branch-description .branch-description_text {
+  font-size: 16px;
+  line-height: 130%;
+  padding-left: 23px;
+  position: relative;
+}
+.branch-card .branch-description .branch-description_text:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+}
+
 .fullsize-video-bg {
   margin-top: -60px;
   padding-top: 20px;
@@ -2236,6 +2333,10 @@ body {
   line-height: 130%;
   color: #000;
   background: rgb(236, 234, 234);
+}
+
+.page-wrapper {
+  overflow: clip;
 }
 
 /*# sourceMappingURL=style.css.map */
