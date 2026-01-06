@@ -2075,6 +2075,161 @@ video {
   }
 }
 
+#services {
+  position: relative;
+}
+#services .services-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+#services .services-overlay .services-overlay__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+#services .services-overlay .services-overlay__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+#services .services-overlay .services-media {
+  position: absolute;
+  bottom: 80px;
+  left: 0;
+  width: 350px;
+  height: 200px;
+  overflow: hidden;
+}
+#services .services-overlay .services-media .services-media__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+#services .services-overlay .services-media .services-media__img.is-active {
+  opacity: 1;
+  z-index: 2;
+}
+
+/* Sticky subsections (working version) */
+.service-subsection {
+  position: relative;
+  min-height: 100vh;
+  z-index: 1;
+}
+.service-subsection .service-subsection__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.service-subsection .service-title {
+  grid-column-start: 4;
+}
+.service-subsection .service-counter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  font-size: 14px;
+  line-height: 110%;
+  letter-spacing: -0.07em;
+  margin-top: 38px;
+}
+.service-subsection .service-counter .current-service, .service-subsection .service-counter .service-count {
+  display: inline-block;
+  padding: 4px 5px 0;
+}
+.service-subsection .service-list .service-list_item {
+  padding: 20px 0 20px 34px;
+  font-size: 16px;
+  line-height: 130%;
+  position: relative;
+  border-top: 0.5px solid transparent;
+}
+.service-subsection .service-list .service-list_item:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  top: 20px;
+}
+.service-subsection.service-1, .service-subsection.service-6 {
+  background: #00323C;
+  color: #E1DCD5;
+}
+.service-subsection.service-1 .service-counter .current-service, .service-subsection.service-6 .service-counter .current-service {
+  background: #A0D7FF;
+  color: #00323C;
+}
+.service-subsection.service-1 .service-list .service-list_item, .service-subsection.service-6 .service-list .service-list_item {
+  border-image: repeating-linear-gradient(90deg, #E1DCD5 0 3px, transparent 3px 6px) 3 0 0 0;
+}
+.service-subsection.service-1 .service-list .service-list_item:before, .service-subsection.service-6 .service-list .service-list_item:before {
+  color: #A0D7FF;
+}
+.service-subsection.service-2 {
+  background: #A0D7FF;
+  color: #00323C;
+}
+.service-subsection.service-2 .service-counter .current-service {
+  background: #00323C;
+  color: #A0D7FF;
+}
+.service-subsection.service-2 .service-list .service-list_item {
+  border-image: repeating-linear-gradient(90deg, #000000 0 3px, transparent 3px 6px) 3 0 0 0;
+}
+.service-subsection.service-2 .service-list .service-list_item:before {
+  color: #00323C;
+}
+.service-subsection.service-3 {
+  background: #0F0F0F;
+  color: #E1DCD5;
+}
+.service-subsection.service-3 .service-counter .current-service {
+  background: #A0D7FF;
+  color: #000;
+}
+.service-subsection.service-3 .service-list .service-list_item {
+  border-image: repeating-linear-gradient(90deg, #E1DCD5 0 3px, transparent 3px 6px) 3 0 0 0;
+}
+.service-subsection.service-3 .service-list .service-list_item:before {
+  color: #A0D7FF;
+}
+.service-subsection.service-4 {
+  background: #640832;
+  color: #E1DCD5;
+}
+.service-subsection.service-4 .service-counter .current-service {
+  background: #FF0000;
+  color: #00323C;
+}
+.service-subsection.service-4 .service-list .service-list_item {
+  border-image: repeating-linear-gradient(90deg, #E1DCD5 0 3px, transparent 3px 6px) 3 0 0 0;
+}
+.service-subsection.service-4 .service-list .service-list_item:before {
+  color: #FF0000;
+}
+.service-subsection.service-5 {
+  background: #E1DCD5;
+  color: #000;
+}
+.service-subsection.service-5 .service-counter .current-service {
+  background: #640832;
+  color: #E1DCD5;
+}
+.service-subsection.service-5 .service-list .service-list_item {
+  border-image: repeating-linear-gradient(90deg, #000000 0 3px, transparent 3px 6px) 3 0 0 0;
+}
+.service-subsection.service-5 .service-list .service-list_item:before {
+  color: #640832;
+}
+
 body {
   font-family: "NeueMachina", sans-serif;
   font-size: 16px;

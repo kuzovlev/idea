@@ -172,3 +172,55 @@ function fitVideo() {
 }
 
 // END
+
+(function () {
+  const sections = document.querySelectorAll(".service-subsection[data-img]");
+  const imgA = document.getElementById("servicesImgA");
+  const imgB = document.getElementById("servicesImgB");
+
+  let activeImg = imgA;
+  let inactiveImg = imgB;
+  let currentSrc = activeImg.src;
+  let isAnimating = false;
+
+  function crossFade(nextSrc) {
+    if (!nextSrc || nextSrc === currentSrc || isAnimating) return;
+
+    isAnimating = true;
+
+    inactiveImg.src = nextSrc;
+
+    // Ensure image is loaded before fade
+    const startFade = () => {
+      inactiveImg.classList.add("is-active");
+      activeImg.classList.remove("is-active");
+
+      // Swap references after transition
+      setTimeout(() => {
+        [activeImg, inactiveImg] = [inactiveImg, activeImg];
+        currentSrc = nextSrc;
+        isAnimating = false;
+      }, 400); // must match CSS transition
+    };
+
+    if (inactiveImg.complete) startFade();
+    else inactiveImg.onload = startFade;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((e) => e.isIntersecting && e.intersectionRatio >= 0.5)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+      if (!visible.length) return;
+
+      crossFade(visible[0].target.dataset.img);
+    },
+    {
+      threshold: [0, 0.5, 0.75, 1],
+    }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+})();
