@@ -50,9 +50,10 @@
 
 /* Sticky subsections (working version) */
 .service-subsection {
-  position: relative;
+  position: sticky;
   min-height: 100vh; // <-- IMPORTANT: must be > 100vh to “pin”
   z-index: 1;
+  top: 0;
 
   .service-subsection__sticky {
     position: sticky;

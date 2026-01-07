@@ -2218,9 +2218,10 @@ video {
 
 /* Sticky subsections (working version) */
 .service-subsection {
-  position: relative;
+  position: sticky;
   min-height: 100vh;
   z-index: 1;
+  top: 0;
 }
 .service-subsection .service-subsection__sticky {
   position: sticky;
