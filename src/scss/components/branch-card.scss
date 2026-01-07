@@ -27,8 +27,8 @@
   }
   &:nth-child(even) {
     .branch-name{
-      background: #E1DCD5;
-      color: #640832;
+      background: #A0D7FF;
+      color: #00323C;
     }
     .branch-description{
       background: url("../img/Union-figure-people-blue.svg") no-repeat left center;
@@ -38,8 +38,8 @@
   }
   &:nth-child(odd) {
     .branch-name{
-      background: #A0D7FF;
-      color: #00323C;
+      background: #E1DCD5;
+      color: #640832;
     }
     .branch-description{
       background: url("../img/union-figure-people-yellow.svg") no-repeat left center;

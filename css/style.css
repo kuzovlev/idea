@@ -2044,8 +2044,8 @@ body.nav-open {
   left: 10px;
 }
 .branch-card:nth-child(even) .branch-name {
-  background: #E1DCD5;
-  color: #640832;
+  background: #A0D7FF;
+  color: #00323C;
 }
 .branch-card:nth-child(even) .branch-description {
   background: url("../img/Union-figure-people-blue.svg") no-repeat left center;
@@ -2053,8 +2053,8 @@ body.nav-open {
   color: #000000;
 }
 .branch-card:nth-child(odd) .branch-name {
-  background: #A0D7FF;
-  color: #00323C;
+  background: #E1DCD5;
+  color: #640832;
 }
 .branch-card:nth-child(odd) .branch-description {
   background: url("../img/union-figure-people-yellow.svg") no-repeat left center;
