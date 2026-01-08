@@ -224,3 +224,120 @@ function fitVideo() {
 
   sections.forEach((section) => observer.observe(section));
 })();
+
+gsap.registerPlugin(ScrollTrigger);
+
+window.addEventListener("load", () => {
+  const section = document.querySelector(".hero-pin");
+  const text    = section.querySelector(".enlarging-text");
+  const logos   = gsap.utils.toArray(".hero-pin .logo");
+  const vh = () => window.innerHeight;
+
+  const clampPx = (min, fluid, max) => Math.min(max, Math.max(min, fluid));
+  const fluidPx = (minPx, maxPx, minVw = 320, maxVw = 1920) => {
+    const vw = window.innerWidth;
+    const t = (vw - minVw) / (maxVw - minVw);
+    return clampPx(minPx, minPx + (maxPx - minPx) * t, maxPx);
+  };
+
+  const getMinFontPx = () => {
+    const w = window.innerWidth;
+    if (w <= 767)  return 32;
+    if (w <= 1023) return 50;
+    return 70;
+  };
+
+  const getTextSizes = () => {
+    const minPx = getMinFontPx();
+    return {
+      from: `${minPx}px`,
+      to: `${fluidPx(minPx, 264, 320, 1440)}px`,
+    };
+  };
+
+  const mm = gsap.matchMedia();
+
+  mm.add(
+    {
+      mobile: "(max-width: 767px)",
+      desktop: "(min-width: 768px)",
+    },
+    (context) => {
+      const { mobile } = context.conditions;
+
+      // HARD RESET (important when crossing breakpoints)
+      ScrollTrigger.getAll().forEach(st => st.kill());
+      gsap.killTweensOf([section, text, logos]);
+
+      gsap.set(section, { clearProps: "transform" });
+      gsap.set(text, { clearProps: "fontSize,transform" });
+      gsap.set(logos, { clearProps: "transform,opacity,willChange" }); // <-- keep CSS vars intact
+
+      if (mobile) {
+        // FULLY STATIC BLOCK
+        // gsap.set(text, {
+        //   fontSize: getTextSizes().from,
+        // });
+
+        gsap.set(logos, {
+          y: 0,
+          opacity: 1,
+          willChange: "auto",
+        });
+
+        return; // no ScrollTrigger, no pin, no animation
+      }
+
+      // DESKTOP / TABLET ANIMATION
+      logos.forEach((el) => {
+        el.dataset.speed = gsap.utils.random(0.75, 1.6);
+        gsap.set(el, {
+          y: vh() * 1.2,
+          opacity: 0,
+          willChange: "transform,opacity",
+        });
+      });
+
+      const fontSizes = getTextSizes();
+
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: "top top",
+          end: () => "+=" + vh() * 2,
+          scrub: true,
+          pin: true,
+          pinSpacing: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      tl.fromTo(
+        text,
+        { fontSize: fontSizes.from },
+        { fontSize: fontSizes.to, ease: "none", duration: 1 }
+      );
+
+      tl.to(
+        logos,
+        { opacity: 1, duration: 0.15, stagger: 0.03, ease: "none" },
+        ">"
+      );
+
+      logos.forEach((el) => {
+        tl.to(
+          el,
+          {
+            y: () => vh() * 1.2 - vh() * 2.4 * Number(el.dataset.speed),
+            ease: "none",
+            duration: 2,
+          },
+          "<"
+        );
+      });
+
+      ScrollTrigger.refresh();
+    }
+  );
+});

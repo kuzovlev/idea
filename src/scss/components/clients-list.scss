@@ -1,0 +1,87 @@
+.clients-row{
+  border-top: .5px solid transparent;
+  border-image: repeating-linear-gradient(90deg, #000000 0 3px, transparent 3px 6px) 3 0 0 0;
+  padding: 20px 0;
+  transition: all .3s ease;
+  opacity: .7;
+  &:hover{
+    padding-bottom: 40px;
+    padding-top: 40px;
+    opacity: 1;
+    .client-name{
+      font-size: 36px;
+      letter-spacing: -.05em;
+    }
+    .client-logo_container {
+      .client-logo_wrapper {
+        opacity: 1;
+      }
+    }
+  }
+  .client-name{
+    transition: all .3s ease;
+    font-size: 20px;
+    line-height: 130%;
+    letter-spacing: 0;
+    color: #000000;
+  }
+  .client-logo_container {
+    position: relative;
+    height: 100%;
+    pointer-events: none;
+    .client-logo_wrapper {
+      opacity: 0;
+      transition: all .3s ease;
+      background: white;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      max-width: 215px;
+      aspect-ratio: 1;
+      position: absolute;
+      bottom: -10px;
+    }
+  }
+  .client-branch{
+    grid-column: 9 / span 4;
+  }
+}
+
+@media (max-width: 1023px) {
+  .clients-row{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 15px 0;
+    &:hover{
+      padding-bottom: 30px;
+      padding-top: 30px;
+      .client-name{
+        font-size: 26px;
+      }
+    }
+    .client-name{
+      font-size: 18px;
+    }
+    .client-branch{
+      font-size: 15px;
+    }
+    .client-logo_container{
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translate(-50%, calc(-100% - 15px));
+      width: 177px;
+      bottom: auto;
+      height: 177px;
+      .client-logo_wrapper{
+        position: static;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
