@@ -1,6 +1,5 @@
 const burger = document.querySelector('.burger');
 const mobileNav = document.querySelector('.mobile-nav');
-// Always load page at top
 if ("scrollRestoration" in history) {
   history.scrollRestoration = "manual";
 }
@@ -274,21 +273,15 @@ window.addEventListener("load", () => {
       gsap.set(logos, { clearProps: "transform,opacity,willChange" }); // <-- keep CSS vars intact
 
       if (mobile) {
-        // FULLY STATIC BLOCK
-        // gsap.set(text, {
-        //   fontSize: getTextSizes().from,
-        // });
-
         gsap.set(logos, {
           y: 0,
           opacity: 1,
           willChange: "auto",
         });
 
-        return; // no ScrollTrigger, no pin, no animation
+        return;
       }
 
-      // DESKTOP / TABLET ANIMATION
       logos.forEach((el) => {
         el.dataset.speed = gsap.utils.random(0.75, 1.6);
         gsap.set(el, {
@@ -340,4 +333,21 @@ window.addEventListener("load", () => {
       ScrollTrigger.refresh();
     }
   );
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const rows = Array.from(document.querySelectorAll(".clients-row"));
+  if (!rows.length) return;
+
+  rows.forEach(r => r.classList.remove("is-active"));
+  rows[0].classList.add("is-active");
+
+  const setActive = (row) => {
+    rows.forEach(r => r.classList.toggle("is-active", r === row));
+  };
+
+  rows.forEach(row => {
+    row.addEventListener("mouseenter", () => setActive(row));
+    row.addEventListener("click", () => setActive(row));
+  });
 });

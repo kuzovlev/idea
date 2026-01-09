@@ -1,10 +1,8 @@
 @use "sass:math";
 
-$spacer-max: 200;
-$spacer-step: 4;
 
 $spacer-max: 200;
-$spacer-step: 4;
+$spacer-step: 2;
 
 @for $i from 0 through math.div($spacer-max, $spacer-step) {
   $value: $i * $spacer-step;
@@ -13,14 +11,14 @@ $spacer-step: 4;
     height: #{$value}px;
   }
 
-  @media (max-width: 768px) {
+  @media (min-width: 568px) and (max-width: 768px) {
     .spacer-m-#{$value} {
       height: #{$value}px;
     }
   }
   @media (max-width: 567px) {
     .spacer-s-#{$value} {
-      height: #{$value}px;
+      height: #{$value}px!important;
     }
   }
 }

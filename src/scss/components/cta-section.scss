@@ -1,0 +1,26 @@
+.cta-red{
+  background: #640832;
+  padding: 80px 0 20px;
+  color: #E1DCD5;
+  .cta-image_wrapper{
+    position: relative;
+    width: 100%;
+    &:before{
+      content: "";
+      position: absolute;
+      width: 100vw;
+      height: 100%;
+      background: #EB2907;
+      top: 0;
+      left: 0;
+      transform: translateX(-99%);
+      z-index: 0;
+    }
+    .cta-image{
+      width: 100%;
+      position: relative;
+      display: block;
+      z-index: 1;
+    }
+  }
+}
