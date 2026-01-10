@@ -11,9 +11,9 @@ $spacer-step: 2;
     height: #{$value}px;
   }
 
-  @media (min-width: 568px) and (max-width: 768px) {
+  @media (min-width: 568px) and (max-width: 1024px) {
     .spacer-m-#{$value} {
-      height: #{$value}px;
+      height: #{$value}px!important;
     }
   }
   @media (max-width: 567px) {

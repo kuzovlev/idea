@@ -67,3 +67,34 @@ video {
     overflow: hidden; /* optional for clip-style effects */
   }
 }
+@media (max-width: 1024px) {
+  .fullsize-video-bg{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+  }
+  #video-viewport {
+    position: relative;
+    overflow: hidden;
+    height: auto !important;
+    width: 100% !important;
+  }
+
+  .fullsize-video-bg {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    padding: 0;
+    .inner{
+      position: absolute;
+      width: 100%;
+    }
+  }
+
+  video {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+  }
+}

@@ -140,6 +140,20 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function fitVideo() {
+  if (window.matchMedia('(max-width: 1024px)').matches) {
+    const video = document.querySelector('video');
+    const viewport = document.querySelector('#video-viewport');
+
+    // reset anything set by desktop logic
+    viewport.style.width = '';
+    viewport.style.height = '';
+    viewport.scrollLeft = 0;
+    viewport.scrollTop = 0;
+
+    video.style.width = '100%';
+    video.style.height = 'auto';
+    return;
+  }
   var video = document.querySelector('video');
   var bg = document.querySelector('.fullsize-video-bg');
   var viewport = document.querySelector('#video-viewport');
@@ -147,7 +161,6 @@ function fitVideo() {
   var bgWidth = bg.offsetWidth;
   var bgHeight = bg.offsetHeight;
 
-  // Match viewport size to background
   viewport.style.width = bgWidth + 'px';
   viewport.style.height = bgHeight + 'px';
 
@@ -155,14 +168,13 @@ function fitVideo() {
   var scale_v = bgHeight / vid_h_orig;
   var scale = Math.max(scale_h, scale_v);
 
-  if (scale * vid_w_orig < min_w) {
+  if (typeof min_w !== 'undefined' && scale * vid_w_orig < min_w) {
     scale = min_w / vid_w_orig;
   }
 
   var videoWidth = scale * vid_w_orig;
   var videoHeight = scale * vid_h_orig;
 
-  // Apply video size
   video.style.width = videoWidth + 'px';
   video.style.height = videoHeight + 'px';
 
@@ -338,16 +350,49 @@ window.addEventListener("load", () => {
 document.addEventListener("DOMContentLoaded", () => {
   const rows = Array.from(document.querySelectorAll(".clients-row"));
   if (!rows.length) return;
-
-  rows.forEach(r => r.classList.remove("is-active"));
-  rows[0].classList.add("is-active");
-
   const setActive = (row) => {
     rows.forEach(r => r.classList.toggle("is-active", r === row));
   };
-
+  setActive(rows[0]);
+  const isFinePointer = window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches;
   rows.forEach(row => {
-    row.addEventListener("mouseenter", () => setActive(row));
-    row.addEventListener("click", () => setActive(row));
+    if (isFinePointer) {
+      row.addEventListener("pointerenter", () => setActive(row));
+    }
+    row.addEventListener("pointerup", (e) => {
+      e.preventDefault?.();
+      setActive(row);
+    });
   });
+});
+
+gsap.registerPlugin(ScrollTrigger);
+
+window.addEventListener("load", () => {
+  const section = document.querySelector(".fullsize-image.parallax");
+  const img = document.querySelector(".fullsize-image.parallax .parallax-img");
+  if (!section || !img) return;
+
+  ScrollTrigger.getById("photoSlow")?.kill();
+  gsap.killTweensOf(img);
+
+  gsap.fromTo(
+    img,
+    { y: "-26%" },
+    {
+      y: "36%",
+      ease: "none",
+      scrollTrigger: {
+        id: "photoSlow",
+        trigger: section,
+        start: "top bottom",
+        end: "bottom top",
+        scrub: true,
+        invalidateOnRefresh: true,
+        // markers: true
+      }
+    }
+  );
+
+  ScrollTrigger.refresh();
 });

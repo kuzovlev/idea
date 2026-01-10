@@ -1,0 +1,20 @@
+.fullsize-image.parallax{
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.after-photo{
+  position: relative;
+  z-index: 2;
+  background: #E1DCD5;
+}
+
+.parallax-img{
+  width: 100vw;
+  height: 120vh;
+  object-fit: cover;
+  display: block;
+  will-change: transform;
+}

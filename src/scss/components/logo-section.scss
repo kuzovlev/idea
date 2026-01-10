@@ -30,4 +30,9 @@
     height: auto;
     padding-bottom: 112px;
   }
+  @media (max-width: 767px){
+    .logo-section_subtext{
+      text-align: center;
+    }
+  }
 }

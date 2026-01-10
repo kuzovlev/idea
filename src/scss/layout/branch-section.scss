@@ -1,0 +1,9 @@
+
+.branch-responsive-title{
+  @media (max-width: 1024px) {
+    margin-bottom: 60px;
+  }
+  @media (max-width: 767px) {
+    margin-bottom: 40px;
+  }
+}
