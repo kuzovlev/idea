@@ -366,7 +366,27 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-gsap.registerPlugin(ScrollTrigger);
+const wrapper = document.querySelector('.footer-logo_wrapper');
+let expanded = false;
+
+function atPageEnd() {
+  return window.scrollY + window.innerHeight >=
+    document.documentElement.scrollHeight - 2;
+}
+
+function onScroll() {
+  if (expanded) return;
+
+  if (atPageEnd()) {
+    wrapper.classList.add('is-expanded');
+    expanded = true;
+    window.removeEventListener('scroll', onScroll);
+  }
+}
+
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+
 
 window.addEventListener("load", () => {
   const section = document.querySelector(".fullsize-image.parallax");
@@ -389,10 +409,29 @@ window.addEventListener("load", () => {
         end: "bottom top",
         scrub: true,
         invalidateOnRefresh: true,
-        // markers: true
       }
     }
   );
 
   ScrollTrigger.refresh();
+
+  const swiper = new Swiper('.reviews-swiper', {
+    slidesPerView: 'auto',
+    spaceBetween: 10,
+    centeredSlides: true,
+    initialSlide: 1,
+    // loop: true,
+    navigation: {
+      nextEl: '.swiper-next',
+      prevEl: '.swiper-prev',
+    },
+    breakpoints: {
+      786: {
+        spaceBetween: 90
+      },
+      1024:{
+        spaceBetween: 185
+      }
+    }
+  })
 });

@@ -3066,6 +3066,167 @@ body.nav-open {
   z-index: 1;
 }
 
+.marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* The moving "track" that slides left to right */
+.marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  white-space: nowrap;
+  animation: marquee-scroll 20s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee__content {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+/* The list and items inside the marquee */
+.marquee__list {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Base style for all items */
+.marquee__item {
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.marquee__item--text {
+  font-size: clamp(28px, 28px + 46 * (100vw - 320px) / 1600, 74px);
+  line-height: 1;
+  font-weight: 800;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.review-item {
+  background: white;
+  border-radius: 40px;
+  padding: 50px 50px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  transition: all 0.25s ease-in-out;
+}
+.review-item.swiper-slide {
+  width: 100%;
+  max-width: 789px;
+  height: auto;
+  display: flex;
+  justify-content: space-between;
+}
+.review-item.swiper-slide:not(.swiper-slide-active) {
+  transform: scale(0.85);
+  opacity: 0.7;
+}
+.review-item .review-content {
+  font-size: 20px;
+  line-height: 140%;
+  letter-spacing: -0.05em;
+}
+.review-item .review-content .review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.review-item .review-content .review-header .review-author {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 16px;
+}
+.review-item .review-content .review-header .review-author__photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 10px;
+}
+.review-item .review-content .review-header .review-author__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.review-item .review-content .review-header .review-author__name {
+  line-height: 100%;
+  letter-spacing: -0.07em;
+  margin-bottom: 5px;
+}
+.review-item .review-content .review-header .review-author__position {
+  line-height: 130%;
+  letter-spacing: 0;
+  opacity: 0.7;
+}
+.review-item .review-text {
+  margin-top: 30px;
+}
+
+.swiper-controls {
+  margin-top: 127px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.swiper-controls .swiper-next, .swiper-controls .swiper-prev {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 75px;
+  height: 75px;
+  border-radius: 10px;
+  border: 1px solid #640832;
+  transition: all 0.25s ease-in-out;
+}
+.swiper-controls .swiper-next img, .swiper-controls .swiper-prev img {
+  width: 30px;
+  height: 30px;
+}
+.swiper-controls .swiper-next.swiper-button-disabled, .swiper-controls .swiper-prev.swiper-button-disabled {
+  opacity: 0.5;
+}
+.swiper-controls .swiper-next {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 1024px) {
+  .swiper-controls {
+    margin-top: 30px;
+  }
+}
+@media (max-width: 767px) {
+  .swiper-controls {
+    margin-top: 40px;
+  }
+  .swiper-controls .swiper-next, .swiper-controls .swiper-prev {
+    width: 50px;
+    height: 50px;
+  }
+  .swiper-controls .swiper-next img, .swiper-controls .swiper-prev img {
+    width: 14px;
+    height: 14px;
+  }
+}
 .fullsize-video-bg {
   margin-top: -60px;
   padding-top: 20px;
@@ -3390,7 +3551,7 @@ footer .footer-logo_wrapper {
   width: 100%;
 }
 footer .footer-logo_wrapper .logo_left-part {
-  flex: 0 0 20.1%;
+  flex: 0 0 20.2%;
   display: flex;
   align-items: stretch;
   overflow: hidden;
@@ -3473,6 +3634,9 @@ footer .footer-logo_wrapper.is-expanded .logo_middle-part {
     height: 1px;
     background: rgba(160, 215, 255, 0.5);
   }
+  footer .footer-logo_wrapper .logo_left-part {
+    flex: 0 0 20.1%;
+  }
   footer .footer-logo_wrapper .logo_middle-part .logo_middle-content {
     flex-direction: row;
     justify-content: space-between;
@@ -3530,7 +3694,6 @@ footer .footer-logo_wrapper.is-expanded .logo_middle-part {
 
 .fullsize-image.parallax {
   position: relative;
-  height: 100vh;
   overflow: hidden;
   z-index: 1;
 }
@@ -3538,12 +3701,11 @@ footer .footer-logo_wrapper.is-expanded .logo_middle-part {
 .after-photo {
   position: relative;
   z-index: 2;
-  background: #E1DCD5;
+  background: #ECEAEA;
 }
 
 .parallax-img {
   width: 100vw;
-  height: 120vh;
   object-fit: cover;
   display: block;
   will-change: transform;
@@ -3562,7 +3724,7 @@ body {
 }
 
 main {
-  background: #E1DCD5;
+  background: #ECEAEA;
 }
 
 /*# sourceMappingURL=style.css.map */

@@ -1,0 +1,59 @@
+.marquee {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+/* The moving "track" that slides left to right */
+.marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  white-space: nowrap;
+  animation: marquee-scroll 20s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee__content {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+/* The list and items inside the marquee */
+.marquee__list {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Base style for all items */
+.marquee__item {
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.marquee__item--text {
+  font-size: clamp(
+    28px,
+    calc(28px + (74 - 28) * ((100vw - 320px) / (1920 - 320))),
+    74px
+  );
+  line-height: 1;
+  font-weight: 800;
+  margin: 0;
+  white-space: nowrap;
+}
