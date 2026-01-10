@@ -302,6 +302,23 @@ header {
 
 @media (max-width: 567px) {
   .mobile-nav{
+    padding-top: 95px;
+    max-height: 100vh;
+    overflow: scroll;
+    gap: 40px;
+    .mobile-nav-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .mobile_new-page{
+      padding: 20px 0 20px 10px;
+      margin-top: 0;
+      border-top: 1px solid transparent;
+      border-bottom: 1px solid transparent;
+      border-image: repeating-linear-gradient(90deg, #000000 0 3px, transparent 3px 6px) 3 0 0 0;
+      border-image-slice: 3 0 3 0;
+    }
     .mobile-nav-footer{
       display: grid;
       grid-template-columns: 1fr;
@@ -309,17 +326,13 @@ header {
         gap: 5px;
       }
     }
-  }
-  .mobile-nav-inner {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-  .mobile-nav .mobile_contact{
-    grid-template-columns: 1fr;
-    gap: 40px;
-    .privacy-link{
-      order: -1;
+    .mobile_contact{
+      margin-top: 20px;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      .privacy-link{
+        order: -1;
+      }
     }
   }
 }
