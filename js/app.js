@@ -25,6 +25,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 
 document.addEventListener("DOMContentLoaded", (event) => {
   gsap.registerPlugin(ScrollTrigger);
+  const mm = gsap.matchMedia();
   // Measure once images are loaded
   if (window.matchMedia("(min-width: 1141px)").matches) {
 
@@ -105,21 +106,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
   }
 
-  if (window.matchMedia("(min-width: 768px)").matches) {
+  mm.add("(min-width: 768px)", () => {
     const lines = gsap.utils.toArray(".hero-text .line");
+    if (!lines.length) return;
     const xValues = [-150, 0, 120];
-    gsap.to(lines, {
-      x: (i) => xValues[i] ?? 0,
-      duration: 0.6,
-      ease: "power2.out",
-      stagger: 0.05,
-      scrollTrigger: {
-        trigger: ".hero-text",
-        start: "center center",
-        once: true
-      }
-    });
-  }
+    const create = () => {
+      gsap.fromTo(lines,
+        { x: 0 },
+        {
+          x: (i) => xValues[i] ?? 0,
+          duration: 0.6,
+          ease: "power2.out",
+          stagger: 0.05,
+          scrollTrigger: {
+            trigger: ".hero-text",
+            start: "top 80%",
+            toggleActions: "play none none none",
+          }
+        }
+      );
+      ScrollTrigger.refresh();
+    };
+    if (document.readyState === "complete") create();
+    else window.addEventListener("load", create, { once: true });
+  });
 });
 
 
@@ -435,3 +445,98 @@ window.addEventListener("load", () => {
     }
   })
 });
+
+(() => {
+  const logo = document.querySelector(".logo-section");
+  const main = document.getElementById("main-content");
+  if (!logo || !main) return;
+
+  let locked = false;
+  let logoTop = 0;
+  let mainTop = 0;
+
+  const EPS = 2;
+  const LOCK_MS = 650;
+
+  function refreshAnchors() {
+    logoTop = Math.round(logo.getBoundingClientRect().top + window.scrollY);
+    mainTop = Math.round(main.getBoundingClientRect().top + window.scrollY);
+  }
+
+  function snapTo(y) {
+    locked = true;
+    window.scrollTo({ top: y, behavior: "smooth" });
+    window.clearTimeout(snapTo._t);
+    snapTo._t = window.setTimeout(() => (locked = false), LOCK_MS);
+  }
+
+  refreshAnchors();
+  window.addEventListener("resize", refreshAnchors);
+
+  const ro = new ResizeObserver(refreshAnchors);
+  ro.observe(document.body);
+
+  window.addEventListener(
+    "wheel",
+    (e) => {
+      if (locked) {
+        e.preventDefault();
+        return;
+      }
+
+      const down = e.deltaY > 0;
+      const y = window.scrollY;
+
+      if (down && y < mainTop - EPS) {
+        e.preventDefault();
+        snapTo(mainTop);
+        return;
+      }
+
+      if (!down && Math.abs(y - mainTop) <= EPS) {
+        e.preventDefault();
+        snapTo(logoTop);
+        return;
+      }
+    },
+    { passive: false }
+  );
+
+  let startY = null;
+  window.addEventListener(
+    "touchstart",
+    (e) => {
+      startY = e.touches[0]?.clientY ?? null;
+    },
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "touchmove",
+    (e) => {
+      if (startY == null) return;
+
+      if (locked) {
+        e.preventDefault();
+        return;
+      }
+
+      const currY = e.touches[0]?.clientY ?? startY;
+      const down = startY - currY > 0;
+      const y = window.scrollY;
+
+      if (down && y < mainTop - EPS) {
+        e.preventDefault();
+        snapTo(mainTop);
+        return;
+      }
+
+      if (!down && Math.abs(y - mainTop) <= EPS) {
+        e.preventDefault();
+        snapTo(logoTop);
+        return;
+      }
+    },
+    { passive: false }
+  );
+})();
