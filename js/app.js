@@ -286,28 +286,42 @@ window.addEventListener("load", () => {
     (context) => {
       const { mobile } = context.conditions;
 
-      // HARD RESET (important when crossing breakpoints)
       ScrollTrigger.getAll().forEach(st => st.kill());
       gsap.killTweensOf([section, text, logos]);
 
       gsap.set(section, { clearProps: "transform" });
       gsap.set(text, { clearProps: "fontSize,transform" });
-      gsap.set(logos, { clearProps: "transform,opacity,willChange" }); // <-- keep CSS vars intact
+      gsap.set(logos, { clearProps: "transform,opacity,willChange" });
 
       if (mobile) {
-        gsap.set(logos, {
-          y: 0,
-          opacity: 1,
-          willChange: "auto",
-        });
-
+        gsap.set(logos, { y: 0, opacity: 1, willChange: "auto" });
         return;
       }
 
-      logos.forEach((el) => {
-        el.dataset.speed = gsap.utils.random(0.75, 1.6);
+      const baseStart = vh() * 1.2;
+
+      const startOffsets = [
+        +0.15,
+        -0.25,
+        +0.10,
+        -0.20,
+      ];
+
+      const speeds = [
+        1.1,
+        1.0,
+        1.6,
+        2.2,
+      ];
+
+      logos.forEach((el, i) => {
+        const offset = startOffsets[i] ?? 0;
+        const speed  = speeds[i] ?? 1;
+
+        el.dataset.speed = speed;
+
         gsap.set(el, {
-          y: vh() * 1.2,
+          y: baseStart + vh() * offset,
           opacity: 0,
           willChange: "transform,opacity",
         });
@@ -328,23 +342,29 @@ window.addEventListener("load", () => {
         },
       });
 
+      // Text scale
       tl.fromTo(
         text,
         { fontSize: fontSizes.from },
         { fontSize: fontSizes.to, ease: "none", duration: 1 }
       );
 
+      // Logos fade in
       tl.to(
         logos,
         { opacity: 1, duration: 0.15, stagger: 0.03, ease: "none" },
         ">"
       );
 
+      const baseTravel = vh() * 3.5;
       logos.forEach((el) => {
+        const startY = gsap.getProperty(el, "y");
+        const speed  = Number(el.dataset.speed);
+
         tl.to(
           el,
           {
-            y: () => vh() * 1.2 - vh() * 2.4 * Number(el.dataset.speed),
+            y: startY - baseTravel * speed,
             ease: "none",
             duration: 2,
           },
@@ -430,6 +450,8 @@ window.addEventListener("load", () => {
     spaceBetween: 10,
     centeredSlides: true,
     initialSlide: 1,
+    observer: true,
+    observeParents: true,
     // loop: true,
     navigation: {
       nextEl: '.swiper-next',
@@ -444,6 +466,8 @@ window.addEventListener("load", () => {
       }
     }
   })
+  swiper.update();
+  swiper.slideTo(1, 0);
 });
 
 (() => {
@@ -456,18 +480,37 @@ window.addEventListener("load", () => {
   let mainTop = 0;
 
   const EPS = 2;
-  const LOCK_MS = 650;
+
+  const SNAP_DURATION = 1000; // ms
+  const EASING = (t) => (t < 0.5
+    ? 4 * t * t * t
+    : 1 - Math.pow(-2 * t + 2, 3) / 2); // easeOutCubic
 
   function refreshAnchors() {
     logoTop = Math.round(logo.getBoundingClientRect().top + window.scrollY);
     mainTop = Math.round(main.getBoundingClientRect().top + window.scrollY);
   }
 
-  function snapTo(y) {
+  function snapTo(targetY) {
     locked = true;
-    window.scrollTo({ top: y, behavior: "smooth" });
-    window.clearTimeout(snapTo._t);
-    snapTo._t = window.setTimeout(() => (locked = false), LOCK_MS);
+
+    const startY = window.scrollY;
+    const delta = targetY - startY;
+    const startTime = performance.now();
+
+    function frame(now) {
+      const t = Math.min((now - startTime) / SNAP_DURATION, 1);
+      const eased = EASING(t);
+      window.scrollTo(0, startY + delta * eased);
+
+      if (t < 1) {
+        requestAnimationFrame(frame);
+      } else {
+        locked = false;
+      }
+    }
+
+    requestAnimationFrame(frame);
   }
 
   refreshAnchors();
@@ -503,13 +546,9 @@ window.addEventListener("load", () => {
   );
 
   let startY = null;
-  window.addEventListener(
-    "touchstart",
-    (e) => {
-      startY = e.touches[0]?.clientY ?? null;
-    },
-    { passive: true }
-  );
+  window.addEventListener("touchstart", (e) => {
+    startY = e.touches[0]?.clientY ?? null;
+  }, { passive: true });
 
   window.addEventListener(
     "touchmove",
@@ -540,3 +579,97 @@ window.addEventListener("load", () => {
     { passive: false }
   );
 })();
+function splitToLines(el) {
+  // Save original HTML once (so we can re-split on resize)
+  if (!el.dataset.original) el.dataset.original = el.innerHTML;
+
+  // Restore
+  el.innerHTML = el.dataset.original;
+
+  // Wrap words to measure line breaks
+  const words = el.textContent.trim().split(/\s+/);
+  el.textContent = "";
+
+  const wordSpans = words.map((word, i) => {
+    const span = document.createElement("span");
+    span.textContent = word + (i < words.length - 1 ? " " : "");
+    span.style.display = "inline";
+    el.appendChild(span);
+    return span;
+  });
+
+  // Group words by their offsetTop (line)
+  const lines = [];
+  let currentLineTop = null;
+  let currentLine = [];
+
+  wordSpans.forEach((span) => {
+    const top = span.offsetTop;
+
+    if (currentLineTop === null) {
+      currentLineTop = top;
+    }
+
+    if (top !== currentLineTop) {
+      lines.push(currentLine);
+      currentLine = [];
+      currentLineTop = top;
+    }
+
+    currentLine.push(span);
+  });
+
+  if (currentLine.length) lines.push(currentLine);
+
+  // Build line wrappers
+  el.textContent = "";
+
+  lines.forEach((lineWords, idx) => {
+    const line = document.createElement("span");
+    line.className = "reveal-line";
+
+    const inner = document.createElement("span");
+    inner.className = "reveal-line-inner";
+    inner.style.setProperty("--line-index", idx);
+
+    lineWords.forEach((w) => inner.appendChild(w));
+    line.appendChild(inner);
+    el.appendChild(line);
+  });
+}
+
+function setupReveal() {
+  const items = document.querySelectorAll("[data-reveal]");
+
+  items.forEach((el) => {
+    splitToLines(el);
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-inview");
+        // reveal only once:
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  items.forEach((el) => io.observe(el));
+
+  // Re-split on resize (line breaks change!)
+  let rAF = null;
+  window.addEventListener("resize", () => {
+    cancelAnimationFrame(rAF);
+    rAF = requestAnimationFrame(() => {
+      items.forEach((el) => {
+        // keep it revealed if it already was
+        const wasRevealed = el.classList.contains("is-inview");
+        splitToLines(el);
+        if (wasRevealed) el.classList.add("is-inview");
+      });
+    });
+  });
+}
+
+document.addEventListener("DOMContentLoaded", setupReveal);

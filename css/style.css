@@ -2860,6 +2860,7 @@ body.nav-open {
   justify-content: space-between;
   align-items: center;
   padding: 0 6vw;
+  z-index: 12;
 }
 
 .logo {
@@ -3144,6 +3145,7 @@ body.nav-open {
   align-items: flex-start;
   gap: 40px;
   transition: all 0.25s ease-in-out;
+  position: relative;
 }
 .review-item.swiper-slide {
   width: 100%;
@@ -3155,6 +3157,9 @@ body.nav-open {
 .review-item.swiper-slide:not(.swiper-slide-active) {
   transform: scale(0.85);
   opacity: 0.7;
+}
+.review-item.swiper-slide:not(.swiper-slide-active) * {
+  filter: blur(10px);
 }
 .review-item .review-content {
   font-size: 20px;
@@ -3510,6 +3515,13 @@ video {
   color: #640832;
 }
 
+@media (min-width: 1920px) {
+  .service-subsection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
 @media (max-width: 1023px) {
   #services .services-overlay .services-media {
     width: 206px;
@@ -3740,6 +3752,35 @@ body {
 
 main {
   background: #ECEAEA;
+}
+
+/* optional: keeps things smooth */
+[data-reveal] {
+  visibility: hidden;
+}
+
+.reveal-line {
+  display: block;
+  overflow: hidden; /* <- the mask */
+}
+
+.reveal-line-inner {
+  display: inline-block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+.is-inview {
+  visibility: visible;
+}
+
+.is-inview .reveal-line-inner {
+  transform: translateY(0);
+  transition: transform 0.85s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.is-inview .reveal-line-inner {
+  transition-delay: calc(var(--line-index) * 80ms);
 }
 
 /*# sourceMappingURL=style.css.map */

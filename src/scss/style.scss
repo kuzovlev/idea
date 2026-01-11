@@ -15,3 +15,27 @@ body{
 main{
   background: #ECEAEA;
 }
+/* optional: keeps things smooth */
+[data-reveal] { visibility: hidden; }
+
+.reveal-line {
+  display: block;
+  overflow: hidden;          /* <- the mask */
+}
+
+.reveal-line-inner {
+  display: inline-block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+.is-inview { visibility: visible; }
+
+.is-inview .reveal-line-inner {
+  transform: translateY(0);
+  transition: transform 0.85s cubic-bezier(.2,.7,.2,1);
+}
+
+.is-inview .reveal-line-inner {
+  transition-delay: calc(var(--line-index) * 80ms);
+}

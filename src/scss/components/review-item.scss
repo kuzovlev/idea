@@ -7,6 +7,7 @@
   align-items: flex-start;
   gap: 40px;
   transition: all .25s ease-in-out;
+  position: relative;
   &.swiper-slide{
     width: 100%;
     max-width: 789px;
@@ -16,6 +17,9 @@
     &:not(.swiper-slide-active){
       transform: scale(.85);
       opacity: .7;
+      *{
+        filter: blur(10px);
+      }
     }
   }
   .review-content{

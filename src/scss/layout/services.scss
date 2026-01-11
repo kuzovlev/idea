@@ -196,6 +196,14 @@
   }
 }
 
+@media (min-width: 1920px){
+  .service-subsection {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 1023px) {
   #services {
     .services-overlay {
