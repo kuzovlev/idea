@@ -14,7 +14,11 @@ h2{
 }
 
 .text-20{
-  font-size: 20px;
+  font-size: clamp(
+    17px,
+    calc(17px + (20 - 17) * ((100vw - 375px) / (1440 - 375))),
+    20px
+  );
   line-height: 130%;
 }
 
@@ -40,6 +44,10 @@ h2{
 }
 .font-weight-800{
   font-weight: 800;
+}
+
+.text-color-black{
+  color: black;
 }
 
 @media (max-width: 1024px){

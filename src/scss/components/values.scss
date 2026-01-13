@@ -1,0 +1,29 @@
+.values-wrapper{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  .value-item{
+    padding: 20px 40px 15px 30px;
+    color: #640832;
+    border-radius: 40px;
+    border: 1px solid #64083280;
+    font-size: clamp(
+      17px,
+      calc(28px + (28 - 17) * ((100vw - 320px) / (1440 - 320))),
+      28px
+    );
+    line-height: 1;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(12px);
+    transition:
+      opacity 600ms ease,
+      transform 600ms ease;
+    transition-delay: var(--inview-delay, 0ms);
+    will-change: opacity, transform;
+    &.is-inview {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

@@ -20,6 +20,22 @@
   position: sticky;
   top: 00px;
   z-index: 99999;
+  &.is-fixed{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    header{
+      transform: translateY(20px);
+      .navbar_logo{
+        color: black;
+        svg{
+          opacity: 1;
+        }
+      }
+    }
+  }
 }
 header {
   color: black;

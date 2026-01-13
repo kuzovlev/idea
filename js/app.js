@@ -673,3 +673,18 @@ function setupReveal() {
 }
 
 document.addEventListener("DOMContentLoaded", setupReveal);
+
+const marquee = document.querySelector(".marquee");
+const track = marquee.querySelector(".marquee__track");
+const first = track.querySelector(".marquee__content");
+
+function setDistance() {
+  // width of ONE sequence
+  const w = Math.ceil(first.getBoundingClientRect().width);
+  track.style.setProperty("--marquee-distance", w);
+}
+
+window.addEventListener("load", setDistance);
+
+// update on resize / responsive changes
+new ResizeObserver(setDistance).observe(first);
