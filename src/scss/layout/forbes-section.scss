@@ -1,0 +1,68 @@
+.forbes-section{
+  padding: 60px 0;
+  background: #640832;
+  color: #E1DCD5;
+  .forbes-left{
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    .forbes-text_wrapper{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .forbes-text{
+        font-size: clamp(
+          54px,
+          calc(220px + (220 - 54) * ((100vw - 375px) / (1440 - 375))),
+          220px
+        );
+        line-height: 100%;
+        letter-spacing: -.05em;
+        font-weight: 800;
+        color: #EB3B28;
+      }
+    }
+    .forbes-year{
+      display: inline-block;
+      color: #640832;
+      background: #EB3B28;
+      padding: 10px 10px 5px;
+      font-size: clamp(
+        24px,
+        calc(36px + (36 - 24) * ((100vw - 375px) / (1440 - 375))),
+        36px
+      );
+    }
+  }
+}
+@media (max-width: 1023px) {
+  .forbes-section {
+    .forbes-left {
+      margin-bottom: 60px;
+      .forbes-text_wrapper {
+        gap: 10px;
+        flex-direction: row;
+        .forbes-text{
+          font-size: 110px;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 767px) {
+  .forbes-section {
+    .forbes-left {
+      margin-bottom: 40px;
+      .forbes-text_wrapper {
+        .forbes-text{
+          font-size: clamp(
+            54px,
+            calc(110px + (110 - 54) * ((100vw - 375px) / (1440 - 375))),
+            110px
+          );
+        }
+      }
+    }
+  }
+}

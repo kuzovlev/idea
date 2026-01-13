@@ -51,6 +51,9 @@ h2{
 }
 
 @media (max-width: 1024px){
+  .medium-text-align-left{
+    text-align: left;
+  }
   .medium-text-align-right{
     text-align: right;
   }
@@ -59,6 +62,6 @@ h2{
 
 @media (max-width: 767px){
   .small-text-align-left{
-    text-align: left;
+    text-align: left!important;
   }
 }
