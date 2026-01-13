@@ -3339,7 +3339,7 @@ body.nav-open {
   position: absolute;
   top: 0;
   width: 100%;
-  height: var(--innerH);
+  height: 80%;
   background: #E1DCD5;
   color: white;
   box-sizing: border-box;
