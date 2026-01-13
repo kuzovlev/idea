@@ -446,29 +446,29 @@ window.addEventListener("load", () => {
   ScrollTrigger.refresh();
 
   const swiper = new Swiper('.reviews-swiper', {
-    slidesPerView: 'auto',
+    slidesPerView: 1,
     spaceBetween: 10,
-    centeredSlides: true,
     initialSlide: 1,
-    observer: true,
-    observeParents: true,
-    // loop: true,
+    centeredSlides: true,
     navigation: {
       nextEl: '.swiper-next',
       prevEl: '.swiper-prev',
-    },
-    breakpoints: {
-      786: {
-        spaceBetween: 90
-      },
-      1024:{
-        spaceBetween: 185
-      }
     }
-  })
-  swiper.update();
-  swiper.slideTo(1, 0);
+  });
+  function setStartSlide() {
+    const idx = window.innerWidth < 786 ? 0 : 1;
+
+    // update first, then slideTo on the next frame so sizes are correct
+    swiper.update();
+    requestAnimationFrame(() => swiper.slideTo(idx, 0));
+  }
+
+  setStartSlide();
+  swiper.on('breakpoint', setStartSlide);
+
 });
+// window.addEventListener('resize', setStartSlide);
+// window.addEventListener('load', setStartSlide);
 
 (() => {
   const logo = document.querySelector(".logo-section");

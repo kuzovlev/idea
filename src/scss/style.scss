@@ -2,25 +2,30 @@
 @use "components";
 @use "layout";
 
-body{
+body {
   font-family: 'NeueMachina', sans-serif;
   font-size: 16px;
   line-height: 130%;
   color: #000;
   background: rgba(236, 234, 234, 1);
 }
-.page-wrapper{
+
+.page-wrapper {
   overflow: clip;
 }
-main{
+
+main {
   background: #ECEAEA;
 }
+
 /* optional: keeps things smooth */
-[data-reveal] { visibility: hidden; }
+[data-reveal] {
+  visibility: hidden;
+}
 
 .reveal-line {
   display: block;
-  overflow: hidden;          /* <- the mask */
+  overflow: hidden; /* <- the mask */
 }
 
 .reveal-line-inner {
@@ -29,20 +34,24 @@ main{
   will-change: transform;
 }
 
-.is-inview { visibility: visible; }
+.is-inview {
+  visibility: visible;
+}
 
 .is-inview .reveal-line-inner {
   transform: translateY(0);
-  transition: transform 0.85s cubic-bezier(.2,.7,.2,1);
+  transition: transform 0.85s cubic-bezier(.2, .7, .2, 1);
 }
 
 .is-inview .reveal-line-inner {
   transition-delay: calc(var(--line-index) * 80ms);
 }
-.team_video-section{
+
+.team_video-section {
   position: relative;
   overflow: hidden;
-  &:before{
+
+  &:before {
     position: absolute;
     content: '';
     top: 0;
@@ -50,5 +59,51 @@ main{
     width: 100%;
     height: 100%;
     background: #002A32E5;
+  }
+}
+
+@media (max-width: 1023px) {
+  .contact-grid {
+    row-gap: 60px;
+    .j-address-cell{
+      order: 1;
+    }
+    .phone-cell{
+      order: 2;
+    }
+    .m-address-cell{
+      order: 3;
+    }
+    .mail-cell{
+      order: 4;
+    }
+    .f-address-cell{
+      order: 5;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-grid {
+    row-gap: 40px;
+
+    .phone-cell{
+      order: 1;
+    }
+    .mail-cell{
+      order: 2;
+    }
+    .j-address-cell{
+      margin-top: 20px;
+      order: 3;
+    }
+    .f-address-cell{
+      order: 4;
+    }
+    .m-address-cell{
+      order: 5;
+    }
+
+
   }
 }
