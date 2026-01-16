@@ -4052,7 +4052,16 @@ footer .footer-logo_wrapper.is-expanded .logo_middle-part {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 20px;
+  gap: 9px;
+}
+.forbes-section .forbes-left div:first-child img {
+  margin-left: -40px;
+}
+.forbes-section .forbes-left div:last-child {
+  margin-top: -36px;
+}
+.forbes-section .forbes-left div:last-child div {
+  margin-left: -30px;
 }
 .forbes-section .forbes-left .forbes-text_wrapper {
   display: flex;
@@ -4066,16 +4075,22 @@ footer .footer-logo_wrapper.is-expanded .logo_middle-part {
   font-weight: 800;
   color: #EB3B28;
 }
+.forbes-section .forbes-left .forbes-text_wrapper .forbes-text:last-child {
+  margin-top: -45px;
+  margin-right: -60px;
+}
 .forbes-section .forbes-left .forbes-year {
   display: inline-block;
   color: #640832;
   background: #EB3B28;
   padding: 10px 10px 5px;
   font-size: clamp(24px, 36px + 12 * (100vw - 375px) / 1065, 36px);
+  line-height: 1;
 }
 
 @media (max-width: 1023px) {
   .forbes-section .forbes-left {
+    max-width: 72vw;
     margin-bottom: 60px;
   }
   .forbes-section .forbes-left .forbes-text_wrapper {
@@ -4085,13 +4100,32 @@ footer .footer-logo_wrapper.is-expanded .logo_middle-part {
   .forbes-section .forbes-left .forbes-text_wrapper .forbes-text {
     font-size: 110px;
   }
+  .forbes-section .forbes-left .forbes-text_wrapper .forbes-text:last-child {
+    margin-top: unset;
+    margin-right: unset;
+  }
+  .forbes-section .forbes-left div:first-child img {
+    margin-left: unset;
+  }
+  .forbes-section .forbes-left div:last-child {
+    margin-top: -26px;
+  }
+  .forbes-section .forbes-left div:last-child div {
+    margin-top: unset;
+  }
 }
 @media (max-width: 767px) {
   .forbes-section .forbes-left {
     margin-bottom: 40px;
   }
   .forbes-section .forbes-left .forbes-text_wrapper .forbes-text {
-    font-size: clamp(54px, 110px + 56 * (100vw - 375px) / 1065, 110px);
+    font-size: clamp(54px, 54px + 56 * (100vw - 375px) / 392, 110px);
+  }
+  .forbes-section .forbes-left div:last-child {
+    margin-top: -10px;
+  }
+  .forbes-section .forbes-left div:last-child div {
+    margin-left: unset;
   }
 }
 body {

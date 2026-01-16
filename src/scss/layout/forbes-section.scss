@@ -6,7 +6,18 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 20px;
+    gap: 9px;
+    div:first-child{
+      img{
+        margin-left: -40px;
+      }
+    }
+    div:last-child{
+      margin-top: -36px;
+      div {
+        margin-left: -30px;
+      }
+    }
     .forbes-text_wrapper{
       display: flex;
       flex-direction: column;
@@ -21,6 +32,10 @@
         letter-spacing: -.05em;
         font-weight: 800;
         color: #EB3B28;
+        &:last-child{
+          margin-top: -45px;
+          margin-right: -60px;
+        }
       }
     }
     .forbes-year{
@@ -33,18 +48,35 @@
         calc(36px + (36 - 24) * ((100vw - 375px) / (1440 - 375))),
         36px
       );
+      line-height: 1;
     }
   }
 }
 @media (max-width: 1023px) {
   .forbes-section {
     .forbes-left {
+      max-width: 72vw;
       margin-bottom: 60px;
       .forbes-text_wrapper {
         gap: 10px;
         flex-direction: row;
         .forbes-text{
           font-size: 110px;
+          &:last-child{
+            margin-top: unset;
+            margin-right: unset;
+          }
+        }
+      }
+      div:first-child{
+        img{
+          margin-left: unset;
+        }
+      }
+      div:last-child{
+        margin-top: -26px;
+        div {
+          margin-top: unset;
         }
       }
     }
@@ -58,9 +90,15 @@
         .forbes-text{
           font-size: clamp(
             54px,
-            calc(110px + (110 - 54) * ((100vw - 375px) / (1440 - 375))),
+            calc(54px + (110 - 54) * ((100vw - 375px) / (767 - 375))),
             110px
           );
+        }
+      }
+      div:last-child{
+        margin-top: -10px;
+        div {
+          margin-left: unset;
         }
       }
     }
