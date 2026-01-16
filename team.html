@@ -35,7 +35,7 @@
     <div class="padding-global">
       <div class="container-regular">
         <header class="grid">
-          <a href="index.html" class="navbar_logo col-4 self-center">
+          <a href="index.html" class="navbar_logo col-2 self-center">
             <!--            <img src="img/logo_curCol.svg" alt="logo">-->
             <svg viewBox="0 0 4141 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
               <g clip-path="url(#clip0_732_143)">
@@ -45,9 +45,12 @@
               </g>
             </svg>
           </a>
-          <div class="col-6 self-stretch nav-wrapper">
+          <div class="col-3 self-stretch nav-wrapper" style="justify-content: flex-end;">
             <a href="#" class="button_link lang-switch self-stretch">Eng</a>
-            <a href="index.html" class="button_link self-stretch" style="padding-right: 20px; width:100%;">Головна</a>
+            <a href="index.html" class="button_link self-stretch" style="padding-right: 20px; width:auto;">Головна</a>
+          </div>
+          <div class="col-5 self-stretch nav-wrapper">
+
             <nav class="nav-list">
               <div class="cur-page">Команда</div>
               <div class="nav-list_divider"></div>
@@ -82,20 +85,10 @@
             </div>
           </a>
           <div class="burger-wrapper">
-            <nav class="lang-switcher mobile" aria-label="Language selector">
-              <details>
-                <summary>
-                  Укр
-                  <svg viewBox="0 0 10 6" aria-hidden="true">
-                    <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"/>
-                  </svg>
-                </summary>
-
-                <ul>
-                  <li><a href="/en/" hreflang="en">ENG</a></li>
-                </ul>
-              </details>
-            </nav>
+            <div style="display:flex; gap: 60px; align-items: center; font-size: 14px; line-height: 112%">
+              <a href="/en/" hreflang="en" >ENG</a>
+              <div class="menu-text__mobile">Меню</div>
+            </div>
             <button class="burger col-2 self-center"
                     aria-label="Toggle navigation"
                     aria-expanded="false">
