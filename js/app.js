@@ -730,7 +730,6 @@
   // ----------------------------
   function initTeamPinnedSection() {
     if (!hasGSAP()) return;
-
     registerST();
 
     const section = qs("#pinSection");
@@ -738,7 +737,7 @@
     const inner = qs("#innerBlock");
     if (!section || !img || !inner || !hasScrollTrigger()) return;
 
-    let st; // rebuild on resize
+    let st;
 
     function setSectionHeightToImage() {
       const h = img.getBoundingClientRect().height;
@@ -748,23 +747,22 @@
     function buildScroll() {
       if (st) st.kill(true);
 
-      window.gsap.set(inner, { clearProps: "y" });
+      gsap.set(inner, { clearProps: "y" });
 
       const sectionH = section.getBoundingClientRect().height;
       const innerH = inner.getBoundingClientRect().height;
 
-      const startTop = (sectionH - innerH) / 2;
       const extra = 24;
-      const travel = startTop + innerH + extra;
+      const travel = innerH + extra;
 
-      st = window.gsap.timeline({
+      st = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: () => "+=" + Math.max(travel, innerH),
+          end: () => "+=" + travel,
           scrub: true,
           pin: true,
-          pinSpacing: false,
+          pinSpacing: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
@@ -774,17 +772,13 @@
     function refreshAll() {
       setSectionHeightToImage();
       buildScroll();
-      window.ScrollTrigger.refresh();
+      ScrollTrigger.refresh();
     }
 
     if (img.complete) refreshAll();
     else img.addEventListener("load", refreshAll, { once: true });
 
-    window.addEventListener("resize", () => {
-      setSectionHeightToImage();
-      buildScroll();
-      window.ScrollTrigger.refresh();
-    });
+    window.addEventListener("resize", refreshAll);
   }
 
   // ----------------------------
