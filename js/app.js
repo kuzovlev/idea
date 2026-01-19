@@ -147,32 +147,45 @@
       if (!mm) return;
 
       mm.add("(min-width: 768px)", () => {
-        const lines = window.gsap.utils.toArray?.(".hero-text .line") ?? [];
+        const gsap = window.gsap;
+        const ScrollTrigger = window.ScrollTrigger;
+
+        const lines = gsap.utils.toArray(".hero-text .line");
         if (!lines.length) return;
 
         const xValues = [-150, 0, 120];
 
         const create = () => {
-          window.gsap.fromTo(
-            lines,
-            { x: 0 },
-            {
-              x: (i) => xValues[i] ?? 0,
-              duration: 0.6,
-              ease: "power2.out",
-              stagger: 0.05,
-              scrollTrigger: {
-                trigger: ".hero-text",
-                start: "top 80%",
-                toggleActions: "play none play reset",
-              },
-            }
-          );
-          window.ScrollTrigger?.refresh?.();
+          gsap.set(lines, { x: 0 });
+
+          const tl = gsap.timeline({ defaults: { ease: "none" } });
+
+          tl.to(lines, {
+            x: (i) => xValues[i] ?? 0,
+            duration: 1,
+            stagger: 0.05, // optional
+          });
+
+          const st = ScrollTrigger.create({
+            trigger: ".hero-text",
+            start: "top 80%",
+            end: "bottom top",
+            scrub: true,
+            animation: tl,
+            invalidateOnRefresh: true,
+          });
+
+          ScrollTrigger.refresh();
+
+          return () => {
+            st.kill();
+            tl.kill();
+            gsap.set(lines, { clearProps: "x" });
+          };
         };
 
-        if (document.readyState === "complete") create();
-        else window.addEventListener("load", create, { once: false });
+        if (document.readyState === "complete") return create();
+        window.addEventListener("load", create, { once: true });
       });
     });
   }
