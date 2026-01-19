@@ -163,8 +163,8 @@
               stagger: 0.05,
               scrollTrigger: {
                 trigger: ".hero-text",
-                start: "top 80%",
-                toggleActions: "play none none none",
+                start: "top 70%",
+                toggleActions: "play reset play reset",
               },
             }
           );
@@ -172,7 +172,7 @@
         };
 
         if (document.readyState === "complete") create();
-        else window.addEventListener("load", create, { once: true });
+        else window.addEventListener("load", create, { once: false });
       });
     });
   }
