@@ -163,8 +163,8 @@
               stagger: 0.05,
               scrollTrigger: {
                 trigger: ".hero-text",
-                start: "top 70%",
-                toggleActions: "play reset play reset",
+                start: "top 80%",
+                toggleActions: "play none play reset",
               },
             }
           );
