@@ -3587,6 +3587,59 @@ body.nav-open .menu-text__mobile {
     gap: 10px;
   }
 }
+.video-play {
+  width: 120px;
+  height: 120px;
+  border-radius: 999px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0;
+  position: absolute;
+  z-index: 999;
+  background: #A0D7FF;
+  color: black;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .fullsize-video-bg, .team_video-section {
+    overflow: hidden;
+    cursor: none;
+  }
+  .video-play {
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .fullsize-video-bg:hover .video-play, .team_video-section:hover .video-play {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@media (max-width: 1024px) {
+  .video-play {
+    width: 80px;
+    height: 80px;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+@media (max-width: 767px) {
+  .video-play {
+    width: 80px;
+    height: 80px;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+  }
+}
 .fullsize-video-bg {
   margin-top: -60px;
   padding-top: 20px;

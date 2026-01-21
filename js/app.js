@@ -845,6 +845,23 @@
   }
 
   // ----------------------------
+  // 16) Tracking mouse on video section
+  // ----------------------------
+  function initTrackingMouseOnVideo() {
+    if (window.matchMedia("(max-width: 1024px)").matches) return;
+    const section = document.querySelector('.fullsize-video-bg, .team_video-section');
+    const button = section.querySelector('.video-play');
+
+    if (!section || !button) return;
+
+    section.addEventListener('mousemove', (e) => {
+      const rect = section.getBoundingClientRect();
+
+      button.style.left = `${e.clientX - rect.left}px`;
+      button.style.top = `${e.clientY - rect.top}px`;
+    });
+  }
+  // ----------------------------
   // Run all inits (safe no-ops if absent)
   // ----------------------------
   initBurgerNav();
@@ -862,4 +879,5 @@
   initMarqueeDistance();
   initTeamPinnedSection();
   initFadeInOnView();
+  initTrackingMouseOnVideo();
 })();
