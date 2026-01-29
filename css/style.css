@@ -4216,12 +4216,120 @@ footer .footer-logo_wrapper.is-expanded .logo_middle-part {
     margin-left: unset;
   }
 }
+.error-404 {
+  background: #EB3B28;
+}
+.error-404 #main-content {
+  padding-top: 286.5px;
+  padding-bottom: 80px;
+}
+.error-404 #main-content .error-404__wrapper {
+  padding: 30px 0;
+  position: relative;
+}
+.error-404 #main-content .error-404__wrapper:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 0.5px;
+  background-image: repeating-linear-gradient(to right, currentColor 0 3px, transparent 3px 6px);
+}
+.error-404 #main-content .error-404__wrapper:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 0.5px;
+  background-image: repeating-linear-gradient(to right, currentColor 0 3px, transparent 3px 6px);
+}
+.error-404 #main-content .error-heading {
+  font-size: 36px;
+  line-height: 100%;
+  letter-spacing: -0.05em;
+  color: #FFFFFF;
+  max-width: 250px;
+}
+.error-404 #main-content .error-text {
+  font-size: 20px;
+  line-height: 112%;
+  margin-bottom: 146.5px;
+}
+
+@media (max-width: 1023px) {
+  .error-404 #main-content {
+    padding-top: 150px;
+  }
+  .error-404 #main-content .error-heading {
+    font-size: 24px;
+  }
+  .error-404 #main-content .error-text {
+    margin-top: 30px;
+    font-size: 18px;
+    line-height: 120%;
+    margin-bottom: 60px;
+  }
+}
+@media (max-width: 767px) {
+  .error-404 #main-content .error-404__wrapper {
+    padding: 15px 0;
+  }
+  .error-404 #main-content .error-404__wrapper .error-page-image-union {
+    height: 100px;
+  }
+  .error-404 #main-content .button_link.mod-cta {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
 body {
   font-family: "NeueMachina", sans-serif;
   font-size: 16px;
   line-height: 130%;
   color: #000;
   background: rgb(236, 234, 234);
+}
+
+#page-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ECEAEA;
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: all;
+  will-change: transform, opacity;
+}
+
+#page-loader .loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+#page-loader .loader-percent {
+  font-size: 70px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #00323C;
+}
+
+#page-loader .loader-sub {
+  font: 500 14px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: rgba(255, 255, 255, 0.65);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.nav-block {
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
 
 .page-wrapper {
