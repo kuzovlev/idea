@@ -2,25 +2,138 @@
   // ----------------------------
   // Small helpers
   // ----------------------------
-  const qs  = (sel, root = document) => root.querySelector(sel);
+  const qs = (sel, root = document) => root.querySelector(sel);
   const qsa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   const onReady = (fn) => {
-    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn, { once: true });
+    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fn, {once: true});
     else fn();
   };
   const onLoad = (fn) => {
     if (document.readyState === "complete") fn();
-    else window.addEventListener("load", fn, { once: true });
+    else window.addEventListener("load", fn, {once: true});
   };
 
   const hasGSAP = () => typeof window.gsap !== "undefined";
   const hasScrollTrigger = () => !!(window.gsap && window.ScrollTrigger);
   const registerST = () => {
     if (hasGSAP() && window.ScrollTrigger) {
-      try { window.gsap.registerPlugin(window.ScrollTrigger); } catch (_) {}
+      try {
+        window.gsap.registerPlugin(window.ScrollTrigger);
+      } catch (_) {
+      }
     }
   };
+// ----------------------------
+// 0) Page Loader (percentage counter + slide up after 100%)
+// ----------------------------
+  function initPageLoader() {
+    const overlay = document.getElementById("page-loader");
+    if (!overlay) return;
+
+    const percentEl = overlay.querySelector("#loaderPercent");
+    if (!percentEl) return;
+
+    // Lock scroll while loading
+    const prevOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+
+    const imgs = Array.from(document.images || []);
+    const total = imgs.length || 1;
+
+    let loaded = 0;
+    let target = 0;
+    let current = 0;
+    let hardDone = false;
+    let finished = false;
+
+    const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+
+    function computeTarget() {
+      const real = (loaded / total) * 100;
+      const capped = hardDone ? 100 : Math.min(real, 99);
+      target = Math.max(target, capped);
+    }
+
+    function tick() {
+      current += (target - current) * 0.08;
+
+      // when hardDone, force it to actually reach 100 quickly
+      if (hardDone && target < 100) target = 100;
+      if (hardDone && 100 - current < 0.6) current = 100;
+
+      const shown = Math.floor(clamp(current, 0, 100));
+      percentEl.textContent = String(shown);
+
+      if (!finished && hardDone && shown >= 100) {
+        finished = true;
+        finish();
+        return;
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function finish() {
+      const navBlock = qs(".nav-block");
+
+      const cleanup = () => {
+        document.documentElement.style.overflow = prevOverflow || "";
+        document.body.classList.add("is-loaded");
+
+        // show navbar
+        if (navBlock) {
+          navBlock.style.opacity = "1";
+        }
+
+        overlay.remove();
+      };
+
+      if (hasGSAP()) {
+        window.gsap.to(overlay, {
+          yPercent: -110,
+          duration: 0.7,
+          ease: "power3.inOut",
+          onComplete: cleanup,
+        });
+      } else {
+        overlay.style.transition = "transform 700ms cubic-bezier(.22,.61,.36,1)";
+        overlay.style.transform = "translateY(-110%)";
+        overlay.addEventListener("transitionend", cleanup, {once: true});
+      }
+    }
+
+    function markOne() {
+      loaded += 1;
+      computeTarget();
+    }
+
+    // Track images
+    imgs.forEach((img) => {
+      if (img.complete && img.naturalWidth > 0) {
+        markOne();
+        return;
+      }
+      img.addEventListener("load", markOne, { once: true });
+      img.addEventListener("error", markOne, { once: true });
+    });
+
+    // Start
+    computeTarget();
+    requestAnimationFrame(tick);
+
+    // Allow 100% when full page load fires
+    onLoad(() => {
+      hardDone = true;
+      target = 100;
+    });
+
+    // Safety fallback: if "load" never fires for some reason, auto-finish after 8s
+    window.setTimeout(() => {
+      if (finished) return;
+      hardDone = true;
+      target = 100;
+    }, 8000);
+  }
 
   // ----------------------------
   // 1) Burger / mobile nav
@@ -57,7 +170,7 @@
         if (!target) return; // IMPORTANT: avoid errors if id doesn't exist
 
         e.preventDefault();
-        target.scrollIntoView({ behavior: "smooth" });
+        target.scrollIntoView({behavior: "smooth"});
       });
     });
   }
@@ -84,13 +197,13 @@
 
       onLoad(() => {
         // Force header into FINAL position for measuring
-        window.gsap.set(header, { y: 20 });
+        window.gsap.set(header, {y: 20});
 
         const navBlockRect = navBlock.getBoundingClientRect();
         const scrollEnd = navBlockRect.top + window.scrollY;
 
         // Reset logo transforms before measuring
-        window.gsap.set(bigLogo, { clearProps: "transform" });
+        window.gsap.set(bigLogo, {clearProps: "transform"});
 
         const bigRect = bigLogo.getBoundingClientRect();
         const navRect = navLogo.getBoundingClientRect();
@@ -100,11 +213,11 @@
         const deltaY = navRect.top - bigRect.top;
 
         // Restore INITIAL header position
-        window.gsap.set(header, { y: 90 });
+        window.gsap.set(header, {y: 90});
 
         // Huge logo scroll animation
         window.gsap.to(bigLogo, {
-          scrollTrigger: { start: 0, end: scrollEnd, scrub: true },
+          scrollTrigger: {start: 0, end: scrollEnd, scrub: true},
           x: deltaX,
           y: deltaY,
           scale,
@@ -126,7 +239,7 @@
 
         // Header movement (90px → 20px)
         window.gsap.to(header, {
-          scrollTrigger: { start: 0, end: scrollEnd, scrub: true },
+          scrollTrigger: {start: 0, end: scrollEnd, scrub: true},
           y: 20,
           ease: "none",
         });
@@ -156,9 +269,9 @@
         const xValues = [-150, 0, 120];
 
         const create = () => {
-          gsap.set(lines, { x: 0 });
+          gsap.set(lines, {x: 0});
 
-          const tl = gsap.timeline({ defaults: { ease: "none" } });
+          const tl = gsap.timeline({defaults: {ease: "none"}});
 
           tl.to(lines, {
             x: (i) => xValues[i] ?? 0,
@@ -180,12 +293,12 @@
           return () => {
             st.kill();
             tl.kill();
-            gsap.set(lines, { clearProps: "x" });
+            gsap.set(lines, {clearProps: "x"});
           };
         };
 
         if (document.readyState === "complete") return create();
-        window.addEventListener("load", create, { once: true });
+        window.addEventListener("load", create, {once: true});
       });
     });
   }
@@ -300,7 +413,7 @@
         if (!visible.length) return;
         crossFade(visible[0].target.dataset.img);
       },
-      { threshold: [0, 0.5, 0.75, 1] }
+      {threshold: [0, 0.5, 0.75, 1]}
     );
 
     sections.forEach((s) => observer.observe(s));
@@ -350,19 +463,19 @@
       if (!mm) return;
 
       mm.add(
-        { mobile: "(max-width: 767px)", desktop: "(min-width: 768px)" },
+        {mobile: "(max-width: 767px)", desktop: "(min-width: 768px)"},
         (context) => {
-          const { mobile } = context.conditions;
+          const {mobile} = context.conditions;
 
           window.ScrollTrigger?.getAll?.().forEach((st) => st.kill());
           window.gsap.killTweensOf([section, text, logos]);
 
-          window.gsap.set(section, { clearProps: "transform" });
-          window.gsap.set(text, { clearProps: "fontSize,transform" });
-          window.gsap.set(logos, { clearProps: "transform,opacity,willChange" });
+          window.gsap.set(section, {clearProps: "transform"});
+          window.gsap.set(text, {clearProps: "fontSize,transform"});
+          window.gsap.set(logos, {clearProps: "transform,opacity,willChange"});
 
           if (mobile) {
-            window.gsap.set(logos, { y: 0, opacity: 1, willChange: "auto" });
+            window.gsap.set(logos, {y: 0, opacity: 1, willChange: "auto"});
             return;
           }
 
@@ -397,15 +510,15 @@
             },
           });
 
-          tl.fromTo(text, { fontSize: fontSizes.from }, { fontSize: fontSizes.to, ease: "none", duration: 1 });
-          tl.to(logos, { opacity: 1, duration: 0.15, stagger: 0.03, ease: "none" }, ">");
+          tl.fromTo(text, {fontSize: fontSizes.from}, {fontSize: fontSizes.to, ease: "none", duration: 1});
+          tl.to(logos, {opacity: 1, duration: 0.15, stagger: 0.03, ease: "none"}, ">");
 
           const baseTravel = vh() * 3.5;
           logos.forEach((el) => {
             const startY = window.gsap.getProperty(el, "y");
             const speed = Number(el.dataset.speed);
 
-            tl.to(el, { y: startY - baseTravel * speed, ease: "none", duration: 2 }, "<");
+            tl.to(el, {y: startY - baseTravel * speed, ease: "none", duration: 2}, "<");
           });
 
           window.ScrollTrigger?.refresh?.();
@@ -459,7 +572,7 @@
       }
     }
 
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, {passive: true});
     onScroll();
   }
 
@@ -480,7 +593,7 @@
 
         window.gsap.fromTo(
           img,
-          { y: "-26%" },
+          {y: "-26%"},
           {
             y: "36%",
             ease: "none",
@@ -590,13 +703,13 @@
           return;
         }
       },
-      { passive: false }
+      {passive: false}
     );
 
     let startY = null;
     window.addEventListener("touchstart", (e) => {
       startY = e.touches[0]?.clientY ?? null;
-    }, { passive: true });
+    }, {passive: true});
 
     window.addEventListener(
       "touchmove",
@@ -624,7 +737,7 @@
           return;
         }
       },
-      { passive: false }
+      {passive: false}
     );
   }
 
@@ -695,7 +808,7 @@
             io.unobserve(entry.target);
           });
         },
-        { threshold: 0.2 }
+        {threshold: 0.2}
       );
 
       items.forEach((el) => io.observe(el));
@@ -760,7 +873,7 @@
     function buildScroll() {
       if (st) st.kill(true);
 
-      gsap.set(inner, { clearProps: "y" });
+      gsap.set(inner, {clearProps: "y"});
 
       const sectionH = section.getBoundingClientRect().height;
       const innerH = inner.getBoundingClientRect().height;
@@ -779,7 +892,7 @@
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
-      }).to(inner, { y: -travel, ease: "none" }, 0);
+      }).to(inner, {y: -travel, ease: "none"}, 0);
     }
 
     function refreshAll() {
@@ -789,7 +902,7 @@
     }
 
     if (img.complete) refreshAll();
-    else img.addEventListener("load", refreshAll, { once: true });
+    else img.addEventListener("load", refreshAll, {once: true});
 
     window.addEventListener("resize", refreshAll);
   }
@@ -798,7 +911,7 @@
   // 15) Fade in on view (team + values) guarded
   // ----------------------------
   function initFadeInOnView() {
-    function fadeInOnView({ container, itemSelector, stagger = 120, baseDelay = 0, threshold = 0.35, once = true }) {
+    function fadeInOnView({container, itemSelector, stagger = 120, baseDelay = 0, threshold = 0.35, once = true}) {
       const root = qs(container);
       if (!root) return;
 
@@ -831,17 +944,17 @@
             if (!rafId) rafId = requestAnimationFrame(flush);
           });
         },
-        { threshold }
+        {threshold}
       );
 
       items.forEach((el) => io.observe(el));
     }
 
     // Team items fade in
-    fadeInOnView({ container: ".team-grid", itemSelector: ".fade-item", stagger: 120 });
+    fadeInOnView({container: ".team-grid", itemSelector: ".fade-item", stagger: 120});
 
     // Values items fade in
-    fadeInOnView({ container: ".values-wrapper", itemSelector: ".fade-item", stagger: 80, threshold: 0.5 });
+    fadeInOnView({container: ".values-wrapper", itemSelector: ".fade-item", stagger: 80, threshold: 0.5});
   }
 
   // ----------------------------
@@ -861,9 +974,12 @@
       button.style.top = `${e.clientY - rect.top}px`;
     });
   }
+
   // ----------------------------
   // Run all inits (safe no-ops if absent)
   // ----------------------------
+  initPageLoader();
+
   initBurgerNav();
   initSmoothAnchors();
   initHeroLogoToNavLogo();
