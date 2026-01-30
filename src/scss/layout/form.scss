@@ -1,0 +1,35 @@
+.form-cell {
+  grid-row: span 2;
+  .contact-form {
+    input, textarea {
+      padding: 6px 0;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid #0000004D;
+      font-size: 20px;
+      line-height: 140%;
+      letter-spacing: -.05em;
+      &:focus-visible{
+        outline: none;
+      }
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+  }
+}
+@media (max-width: 1023px) {
+  .form-cell {
+    .contact-form {
+      margin-bottom: 60px;
+      input, textarea {
+        font-size: 18px;
+      }
+      .form-group {
+        gap: 30px;
+      }
+    }
+  }
+}

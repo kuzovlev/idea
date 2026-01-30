@@ -984,15 +984,38 @@
         <div class="container-regular">
           <h2 class="section-title text-color-black">Зв’яжіться <br>з нами</h2>
           <div class="heading-divider"></div>
-          <div class="spacer-100 spacer-m-90"></div>
+          <div class="spacer-100 spacer-m-90 spacer-s-60"></div>
           <div class="grid contact-grid">
             <div class="col-6 col-m-4 phone-cell">
-              <div class="mobile-nav-footer_heading">
-                <img src="./img/phone-icon.svg" alt="Phone icon">
-                Phone
+              <div class="contact-item">
+                <div class="mobile-nav-footer_heading">
+                  <img src="./img/phone-icon.svg" alt="Phone icon">
+                  Phone
+                </div>
+                <div class="spacer-20 spacer-s-14"></div>
+                <a href="tel:+380931702929">+38 093 170 29 29</a>
               </div>
-              <div class="spacer-20"></div>
-              <a href="tel:+380931702929">+38 093 170 29 29</a>
+            </div>
+            <div class="col-6 form-cell">
+              <form class="contact-form" action="">
+                <div class="form-group">
+                  <input type="text" name='client-name' placeholder="Імʼя">
+                  <input type="text" name="client_surname" placeholder="Прізвище">
+                  <input type="text" name="client_company" placeholder="Назва Компанії">
+                  <input type="text" name="client_phone" placeholder="Номер Телефону">
+                  <input type="email" name="client_email" placeholder="Email">
+                </div>
+                <div class="spacer-80 spacer-m-60"></div>
+                <div class="button_link submit-form">
+                  <div>Надіслати запит</div>
+                  <div class="square_link">
+                    <div class="arrow_icon first_arrow">
+                      <img src="img/arrow-nav.svg" loading="lazy" alt="Arrow black, icon, svg, black"></div>
+                    <div class="arrow_icon second_arrow">
+                      <img src="img/arrow-nav.svg" loading="lazy" alt="Arrow black, icon, svg, black"></div>
+                  </div>
+                </div>
+              </form>
             </div>
             <div class="col-6 col-m-4 mail-cell">
               <div class="contact-item">
@@ -1000,7 +1023,7 @@
                   <img src="./img/mail-icon.svg" alt="envelope icon">
                   Mail
                 </div>
-                <div class="spacer-20"></div>
+                <div class="spacer-20 spacer-s-14"></div>
                 <a href="mailto:welcome@ideatravelsolutions.com">welcome@ideatravelsolutions.com</a>
               </div>
             </div>
@@ -1077,7 +1100,24 @@
     </div>
   </main>
 </div>
+<div class="form-modal" id="formSuccessModal" aria-hidden="true">
+  <div class="form-modal__backdrop" data-close="true"></div>
 
+  <div class="form-modal__card" role="dialog" aria-modal="true" aria-labelledby="formModalTitle">
+    <button class="form-modal__close" type="button" aria-label="Close" data-close="true">×</button>
+
+    <div class="form-modal__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="28" height="28">
+        <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <h3 class="form-modal__title" id="formModalTitle">Дякуємо!</h3>
+    <p class="form-modal__text">Ваш запит успішно надіслано. Ми зв’яжемося з вами найближчим часом.</p>
+
+    <button class="form-modal__btn" type="button" data-close="true">Закрити</button>
+  </div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.1/dist/SplitText.min.js"></script>
