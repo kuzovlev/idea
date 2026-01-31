@@ -17,6 +17,9 @@
     font-weight: 800;
     letter-spacing: -.07em;
   }
+  .advantage-text{
+    min-height: 68px;
+  }
   .advantage-image{
     width: 100%;
     max-width: 100px;
@@ -34,6 +37,7 @@
       grid-column: span 2;
     }
     .advantage-text{
+      min-height: unset;
       grid-column: span 4;
     }
 
