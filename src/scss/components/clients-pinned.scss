@@ -34,6 +34,8 @@
   position: relative;
   width: 210px;
   height: 210px;
+  box-sizing: border-box;
+  padding: 20px;
   background-color: var(--bg);
   color: var(--text);
   //padding: 30px 15px;

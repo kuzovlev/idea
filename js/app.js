@@ -24,22 +24,30 @@
       }
     }
   };
-// ----------------------------
-// 0) Page Loader (percentage counter + slide up after 100%)
+  // ----------------------------
+// 0) Page Loader (footer HTML + % counter + slides up after 100%)
 // ----------------------------
   function initPageLoader() {
-    const overlay = document.getElementById("page-loader");
+    const overlay = qs("#page-loader");
     if (!overlay) return;
 
-    const percentEl = overlay.querySelector("#loaderPercent");
+    const percentEl = qs("#loaderPercent", overlay);
     if (!percentEl) return;
+
+    // Prevent double init
+    if (overlay.dataset.loaderInit === "1") return;
+    overlay.dataset.loaderInit = "1";
 
     // Lock scroll while loading
     const prevOverflow = document.documentElement.style.overflow;
     document.documentElement.style.overflow = "hidden";
 
+    // Ensure it's visible initially (in case CSS hides it by default)
+    overlay.style.transform = "translateY(0)";
+    overlay.style.pointerEvents = "all";
+
     const imgs = Array.from(document.images || []);
-    const total = imgs.length || 1;
+    const total = Math.max(1, imgs.length);
 
     let loaded = 0;
     let target = 0;
@@ -51,6 +59,7 @@
 
     function computeTarget() {
       const real = (loaded / total) * 100;
+      // keep it under 99 until the real window "load" fires
       const capped = hardDone ? 100 : Math.min(real, 99);
       target = Math.max(target, capped);
     }
@@ -58,9 +67,11 @@
     function tick() {
       current += (target - current) * 0.08;
 
-      // when hardDone, force it to actually reach 100 quickly
-      if (hardDone && target < 100) target = 100;
-      if (hardDone && 100 - current < 0.6) current = 100;
+      // When load fired, force finish
+      if (hardDone) {
+        target = 100;
+        if (100 - current < 0.6) current = 100;
+      }
 
       const shown = Math.floor(clamp(current, 0, 100));
       percentEl.textContent = String(shown);
@@ -107,27 +118,26 @@
       computeTarget();
     }
 
-    // Track images
+    // Track images already in DOM
     imgs.forEach((img) => {
       if (img.complete && img.naturalWidth > 0) {
         markOne();
         return;
       }
-      img.addEventListener("load", markOne, { once: true });
-      img.addEventListener("error", markOne, { once: true });
+      img.addEventListener("load", markOne, {once: true});
+      img.addEventListener("error", markOne, {once: true});
     });
 
-    // Start
     computeTarget();
     requestAnimationFrame(tick);
 
-    // Allow 100% when full page load fires
+    // This is what unlocks 100% reliably
     onLoad(() => {
       hardDone = true;
       target = 100;
     });
 
-    // Safety fallback: if "load" never fires for some reason, auto-finish after 8s
+    // Safety: never get stuck at 99 if load is delayed by something external
     window.setTimeout(() => {
       if (finished) return;
       hardDone = true;
@@ -180,69 +190,79 @@
   // ----------------------------
   function initHeroLogoToNavLogo() {
     if (!hasGSAP()) return;
-
     registerST();
 
     onReady(() => {
-      const mm = window.gsap.matchMedia?.();
-      if (!mm) return;
-
       if (!window.matchMedia("(min-width: 1141px)").matches) return;
+
+      const gsap = window.gsap;
+      const ScrollTrigger = window.ScrollTrigger;
 
       const bigLogo = qs(".logo-section img");
       const navLogo = qs(".navbar_logo svg");
       const navBlock = qs(".nav-block");
       const header = qs("header");
-      if (!bigLogo || !navLogo || !navBlock || !header) return;
+      if (!bigLogo || !navLogo || !navBlock || !header || !ScrollTrigger) return;
 
-      onLoad(() => {
-        // Force header into FINAL position for measuring
-        window.gsap.set(header, {y: 20});
+      const waitFonts = () =>
+        document.fonts?.ready ? document.fonts.ready.catch(() => {
+        }) : Promise.resolve();
 
-        const navBlockRect = navBlock.getBoundingClientRect();
-        const scrollEnd = navBlockRect.top + window.scrollY;
+      onLoad(async () => {
+        await waitFonts();
 
-        // Reset logo transforms before measuring
-        window.gsap.set(bigLogo, {clearProps: "transform"});
+        let tl;
 
-        const bigRect = bigLogo.getBoundingClientRect();
-        const navRect = navLogo.getBoundingClientRect();
+        const build = () => {
+          tl?.kill();
+          ScrollTrigger.getById("heroLogoToNav")?.kill();
 
-        const scale = navRect.width / bigRect.width;
-        const deltaX = navRect.left - bigRect.left;
-        const deltaY = navRect.top - bigRect.top;
+          // Use current header position as "start" (don’t hardcode 90)
+          const headerStartY = Number(gsap.getProperty(header, "y")) || 0;
+          const headerEndY = 20;
 
-        // Restore INITIAL header position
-        window.gsap.set(header, {y: 90});
+          // end based on current layout (recomputed on refresh)
+          const scrollEnd = navBlock.getBoundingClientRect().top + window.scrollY;
 
-        // Huge logo scroll animation
-        window.gsap.to(bigLogo, {
-          scrollTrigger: {start: 0, end: scrollEnd, scrub: true},
-          x: deltaX,
-          y: deltaY,
-          scale,
-          ease: "none",
-        });
+          // reset bigLogo transforms before measuring
+          gsap.set(bigLogo, {clearProps: "transform"});
 
-        // Logo visibility switch
-        window.ScrollTrigger?.create?.({
-          start: scrollEnd,
-          onEnter: () => {
-            navLogo.style.opacity = "1";
-            bigLogo.style.opacity = "0";
-          },
-          onLeaveBack: () => {
-            navLogo.style.opacity = "0";
-            bigLogo.style.opacity = "1";
-          },
-        });
+          // temporarily set header to final position so navLogo rect is correct
+          gsap.set(header, {y: headerEndY});
 
-        // Header movement (90px → 20px)
-        window.gsap.to(header, {
-          scrollTrigger: {start: 0, end: scrollEnd, scrub: true},
-          y: 20,
-          ease: "none",
-        });
+          const bigRect = bigLogo.getBoundingClientRect();
+          const navRect = navLogo.getBoundingClientRect();
+
+          const scale = navRect.width / bigRect.width;
+          const deltaX = navRect.left - bigRect.left;
+          const deltaY = navRect.top - bigRect.top;
+
+          // restore header start
+          gsap.set(header, {y: headerStartY});
+
+          tl = gsap.timeline({
+            defaults: {ease: "none"},
+            scrollTrigger: {
+              id: "heroLogoToNav",
+              trigger: document.documentElement,
+              start: 0,
+              end: scrollEnd,
+              scrub: true,
+              invalidateOnRefresh: true,
+            },
+          });
+
+          tl.to(bigLogo, {x: deltaX, y: deltaY, scale}, 0);
+          tl.to(header, {y: headerEndY}, 0);
+
+          // visibility switch near the end (optional)
+          tl.to(navLogo, {opacity: 1, duration: 0.01}, 0.98);
+          tl.to(bigLogo, {opacity: 0, duration: 0.01}, 0.98);
+        };
+
+        build();
+        window.addEventListener("resize", () => ScrollTrigger.refresh());
+        ScrollTrigger.addEventListener("refreshInit", build);
       });
     });
   }
@@ -451,15 +471,12 @@
 
         let topSection;
         if (scrollingDown) {
-          // Scrolling down: pick highest intersection ratio
           topSection = visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0].target;
         } else {
-          // Scrolling up: only switch to previous section if it's MORE visible than current
           const currentSection = sections[lastSectionIndex];
           const currentEntry = entries.find(e => e.target === currentSection);
           const currentRatio = currentEntry?.intersectionRatio || 0;
 
-          // Find the previous section (lower index)
           const previousSections = visible
             .filter(e => {
               const idx = Array.from(sections).indexOf(e.target);
@@ -472,17 +489,14 @@
             });
 
           if (previousSections.length && previousSections[0].intersectionRatio > currentRatio) {
-            // Previous section is more visible, switch to it
             topSection = previousSections[0].target;
           } else {
-            // Stay with current section
             return;
           }
         }
 
         const topSectionIndex = Array.from(sections).indexOf(topSection);
 
-        // Only allow adjacent transitions
         if (Math.abs(topSectionIndex - lastSectionIndex) > 1) return;
 
         lastSectionIndex = topSectionIndex;
@@ -939,26 +953,75 @@
     const inner = qs("#innerBlock");
     if (!section || !img || !inner || !hasScrollTrigger()) return;
 
-    let st;
+    let tl = null;
+    let resizeTimer = null;
+
+    const mobileBlock = qs(".injection-item"); // your existing HTML block
+    let homeAnchor = null;
+
+    function ensureHomeAnchor() {
+      if (!mobileBlock || homeAnchor) return;
+      homeAnchor = document.createComment("injection-item-home");
+      mobileBlock.parentNode.insertBefore(homeAnchor, mobileBlock);
+    }
+
+    function isMobile() {
+      return window.matchMedia("(max-width: 767px)").matches;
+    }
+
+    function placeInsideSpacerAfterSection() {
+      if (!mobileBlock || !section) return;
+
+      ensureHomeAnchor();
+
+      if (!isMobile()) {
+        if (homeAnchor?.parentNode) {
+          homeAnchor.parentNode.insertBefore(mobileBlock, homeAnchor.nextSibling);
+        }
+        return;
+      }
+
+      const spacer =
+        tl?.scrollTrigger?.pinSpacer ||
+        (section.parentElement?.classList?.contains("pin-spacer") ? section.parentElement : null);
+
+      if (!spacer) return;
+
+      spacer.insertBefore(mobileBlock, section.nextSibling);
+    }
+
+    function placeAfterRefresh() {
+      requestAnimationFrame(() => requestAnimationFrame(placeInsideSpacerAfterSection));
+    }
+
+    // ===== GSAP / ST lifecycle =====
+    function killTL() {
+      if (!tl) return;
+      tl.scrollTrigger?.kill(true);
+      tl.kill();
+      tl = null;
+
+      section.style.removeProperty("height");
+      gsap.set(inner, {clearProps: "transform"});
+    }
 
     function setSectionHeightToImage() {
-      const h = img.getBoundingClientRect().height;
-      section.style.height = `${h}px`;
+      const h = img.offsetHeight || img.getBoundingClientRect().height;
+      section.style.height = `${Math.max(1, h)}px`;
     }
 
     function buildScroll() {
-      if (st) st.kill(true);
+      killTL();
 
-      gsap.set(inner, {clearProps: "y"});
+      setSectionHeightToImage();
 
-      const sectionH = section.getBoundingClientRect().height;
       const innerH = inner.getBoundingClientRect().height;
-
       const extra = 24;
       const travel = innerH + extra;
 
-      st = gsap.timeline({
+      tl = gsap.timeline({
         scrollTrigger: {
+          id: "teamPin",
           trigger: section,
           start: "top top",
           end: () => "+=" + travel,
@@ -967,20 +1030,55 @@
           pinSpacing: true,
           anticipatePin: 1,
           invalidateOnRefresh: true,
+          pinType: ScrollTrigger.isTouch ? "transform" : "fixed",
         },
       }).to(inner, {y: -travel, ease: "none"}, 0);
+
+      placeAfterRefresh();
     }
 
-    function refreshAll() {
-      setSectionHeightToImage();
+    function refreshAllDebounced() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        buildScroll();
+        ScrollTrigger.refresh();
+        placeAfterRefresh();
+      }, 150);
+    }
+
+    ScrollTrigger.addEventListener("refresh", placeAfterRefresh);
+
+    if (img.complete) {
       buildScroll();
       ScrollTrigger.refresh();
+      placeAfterRefresh();
+    } else {
+      img.addEventListener(
+        "load",
+        () => {
+          buildScroll();
+          ScrollTrigger.refresh();
+          placeAfterRefresh();
+        },
+        {once: true}
+      );
     }
 
-    if (img.complete) refreshAll();
-    else img.addEventListener("load", refreshAll, {once: true});
+    window.addEventListener("resize", refreshAllDebounced);
+    window.addEventListener("resize", placeAfterRefresh);
 
-    window.addEventListener("resize", refreshAll);
+    return () => {
+      window.removeEventListener("resize", refreshAllDebounced);
+      window.removeEventListener("resize", placeAfterRefresh);
+
+      ScrollTrigger.removeEventListener("refresh", placeAfterRefresh);
+
+      if (mobileBlock && homeAnchor?.parentNode) {
+        homeAnchor.parentNode.insertBefore(mobileBlock, homeAnchor.nextSibling);
+      }
+
+      killTL();
+    };
   }
 
   // ----------------------------
@@ -1055,7 +1153,6 @@
   // Run all inits (safe no-ops if absent)
   // ----------------------------
   initPageLoader();
-
   initBurgerNav();
   initSmoothAnchors();
   initHeroLogoToNavLogo();
@@ -1073,3 +1170,74 @@
   initFadeInOnView();
   initTrackingMouseOnVideo();
 })();
+
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('.contact-form');
+  const submitBtn = document.querySelector('.submit-form');
+
+  const modal = document.getElementById('formSuccessModal');
+  let autoCloseTimer = null;
+
+  function openModal() {
+    if (!modal) return;
+
+    modal.classList.add('is-open');
+    modal.setAttribute('aria-hidden', 'false');
+
+    // optional auto-close
+    clearTimeout(autoCloseTimer);
+    autoCloseTimer = setTimeout(() => closeModal(), 3500);
+  }
+
+  function closeModal() {
+    if (!modal) return;
+
+    modal.classList.remove('is-open');
+    modal.setAttribute('aria-hidden', 'true');
+    clearTimeout(autoCloseTimer);
+  }
+
+  // close handlers (click outside / button / X)
+  if (modal) {
+    modal.addEventListener('click', (e) => {
+      if (e.target && e.target.dataset && e.target.dataset.close === 'true') {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+  }
+
+  submitBtn?.addEventListener('click', async () => {
+    if (!form) return;
+
+    const formData = new FormData(form);
+    formData.append('action', 'submit_contact_form');
+
+    submitBtn.classList.add('is-loading');
+    submitBtn.style.pointerEvents = 'none';
+
+    try {
+      const res = await fetch('/wp-admin/admin-ajax.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        form.reset();
+        openModal();
+      } else {
+        alert('Помилка. Спробуйте ще раз.');
+      }
+    } catch (err) {
+      alert('Помилка зʼєднання.');
+    } finally {
+      submitBtn.classList.remove('is-loading');
+      submitBtn.style.pointerEvents = '';
+    }
+  });
+});

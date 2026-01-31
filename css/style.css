@@ -2163,6 +2163,15 @@ h2 {
   }
 }
 
+.show-mobile {
+  display: none;
+}
+@media (max-width: 767px) {
+  .show-mobile {
+    display: block !important;
+  }
+}
+
 .button_link {
   padding: 3px 3px 3px 20px;
   background: white;
@@ -2931,6 +2940,8 @@ body.nav-open .menu-text__mobile {
   position: relative;
   width: 210px;
   height: 210px;
+  box-sizing: border-box;
+  padding: 20px;
   background-color: var(--bg);
   color: var(--text);
   font-size: 16px;
@@ -4554,6 +4565,19 @@ main {
   background: #111;
   color: #fff;
   font-weight: 600;
+}
+
+.team-scroll-more {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  z-index: -1;
+  position: relative;
+  text-align: center;
 }
 
 @media (prefers-reduced-motion: reduce) {
