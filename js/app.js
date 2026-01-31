@@ -380,8 +380,40 @@
 
     let activeImg = imgA;
     let inactiveImg = imgB;
-    let currentSrc = activeImg.src;
+    let currentSrc = null;
     let isAnimating = false;
+    let lastScrollY = window.scrollY;
+    let lastSectionIndex = 0;
+    let isInitialized = false;
+
+    function initializeImage() {
+      const visible = Array.from(sections).find((section) => {
+        const rect = section.getBoundingClientRect();
+        return rect.top < window.innerHeight * 0.75 && rect.bottom > window.innerHeight * 0.25;
+      });
+
+      if (visible) {
+        const initialSrc = visible.dataset.img;
+        activeImg.src = initialSrc;
+        currentSrc = initialSrc;
+        lastSectionIndex = Array.from(sections).indexOf(visible);
+      } else {
+        const lastSection = sections[sections.length - 1];
+        const lastRect = lastSection.getBoundingClientRect();
+
+        if (lastRect.bottom < 0) {
+          const initialSrc = lastSection.dataset.img;
+          activeImg.src = initialSrc;
+          currentSrc = initialSrc;
+          lastSectionIndex = sections.length - 1;
+        } else {
+          currentSrc = activeImg.src;
+          lastSectionIndex = 0;
+        }
+      }
+
+      isInitialized = true;
+    }
 
     function crossFade(nextSrc) {
       if (!nextSrc || nextSrc === currentSrc || isAnimating) return;
@@ -406,16 +438,60 @@
 
     const observer = new IntersectionObserver(
       (entries) => {
+        if (!isInitialized) return;
+
         const visible = entries
-          .filter((e) => e.isIntersecting && e.intersectionRatio >= 0.5)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+          .filter((e) => e.isIntersecting && e.intersectionRatio >= 0.5);
+
+        const currentScrollY = window.scrollY;
+        const scrollingDown = currentScrollY > lastScrollY;
+        lastScrollY = currentScrollY;
 
         if (!visible.length) return;
-        crossFade(visible[0].target.dataset.img);
+
+        let topSection;
+        if (scrollingDown) {
+          // Scrolling down: pick highest intersection ratio
+          topSection = visible.sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0].target;
+        } else {
+          // Scrolling up: only switch to previous section if it's MORE visible than current
+          const currentSection = sections[lastSectionIndex];
+          const currentEntry = entries.find(e => e.target === currentSection);
+          const currentRatio = currentEntry?.intersectionRatio || 0;
+
+          // Find the previous section (lower index)
+          const previousSections = visible
+            .filter(e => {
+              const idx = Array.from(sections).indexOf(e.target);
+              return idx < lastSectionIndex;
+            })
+            .sort((a, b) => {
+              const indexA = Array.from(sections).indexOf(a.target);
+              const indexB = Array.from(sections).indexOf(b.target);
+              return indexB - indexA; // Highest index first (closest previous)
+            });
+
+          if (previousSections.length && previousSections[0].intersectionRatio > currentRatio) {
+            // Previous section is more visible, switch to it
+            topSection = previousSections[0].target;
+          } else {
+            // Stay with current section
+            return;
+          }
+        }
+
+        const topSectionIndex = Array.from(sections).indexOf(topSection);
+
+        // Only allow adjacent transitions
+        if (Math.abs(topSectionIndex - lastSectionIndex) > 1) return;
+
+        lastSectionIndex = topSectionIndex;
+        crossFade(topSection.dataset.img);
       },
       {threshold: [0, 0.5, 0.75, 1]}
     );
 
+    initializeImage();
     sections.forEach((s) => observer.observe(s));
   }
 
