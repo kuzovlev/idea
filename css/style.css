@@ -3732,6 +3732,8 @@ video {
   .fullsize-video-bg .inner {
     position: absolute;
     width: 100%;
+    top: 50%;
+    transform: translateY(-50%);
   }
   video {
     width: 100% !important;
