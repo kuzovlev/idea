@@ -2520,7 +2520,7 @@ header .burger-wrapper {
     padding: 135px 30px 60px 30px;
     background: #ECEAEA;
     z-index: 1000;
-    transform: translateY(-100%);
+    transform: translateY(-200%);
     transition: transform 0.35s ease;
   }
   .mobile-nav .mobile-nav-footer {
@@ -2709,6 +2709,11 @@ body.nav-open .menu-text__mobile {
   padding-top: 30px;
   color: #E1DCD5;
   height: calc(100vh - 210px);
+}
+@media (min-width: 1140px) {
+  .logo-section {
+    min-height: 600px;
+  }
 }
 .logo-section .transforming-logo {
   padding-bottom: 90px;
@@ -3368,7 +3373,6 @@ body.nav-open .menu-text__mobile {
   position: relative;
   width: 100%;
   overflow: hidden;
-  background-image: url("../img/team-page-photo.png");
   background-size: cover;
   background-position: center;
 }
@@ -3393,24 +3397,42 @@ body.nav-open .menu-text__mobile {
 .team-inner-top {
   position: absolute;
   top: 0;
+  position: absolute;
+  top: 0;
   width: 100%;
   height: 80%;
-  background: #E1DCD5;
+  background: transparent;
   color: white;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  mix-blend-mode: normal;
+  backdrop-filter: none;
+}
+.team-inner-top:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #E1DCD5;
   mix-blend-mode: screen;
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 0;
 }
 .team-inner-top .team__hero-text-container {
+  position: relative;
+  z-index: 1;
   color: black;
 }
 .team-inner-top .team__hero-text-container .team__hero-text {
   font-size: clamp(54px, 220px + 166 * (100vw - 320px) / 1600, 220px);
   line-height: 1;
   font-weight: 800;
+}
+@media (max-width: 767px) {
+  .team-inner-top {
+    height: 221px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -3427,6 +3449,8 @@ body.nav-open .menu-text__mobile {
   width: 100%;
   height: auto;
   display: block;
+  min-height: 500px;
+  object-fit: cover;
 }
 
 /* panel sits above the image */
@@ -4339,6 +4363,10 @@ body {
   line-height: 130%;
   color: #000;
   background: rgb(236, 234, 234);
+}
+
+#innerBlock {
+  will-change: transform;
 }
 
 #page-loader {

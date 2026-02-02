@@ -4,6 +4,9 @@
   //padding-bottom: 130px;
   color: #E1DCD5;
   height: calc(100vh - 210px);
+  @media (min-width: 1140px) {
+    min-height: 600px;
+  }
   .transforming-logo {
     padding-bottom: 90px;
     max-width: 100%;

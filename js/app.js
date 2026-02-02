@@ -205,11 +205,18 @@
       if (!bigLogo || !navLogo || !navBlock || !header || !ScrollTrigger) return;
 
       const waitFonts = () =>
-        document.fonts?.ready ? document.fonts.ready.catch(() => {
-        }) : Promise.resolve();
+        document.fonts?.ready ? document.fonts.ready.catch(() => {}) : Promise.resolve();
+      const waitImage = (img) => {
+        if (!img) return Promise.resolve();
+        if (img.complete && img.naturalWidth) return Promise.resolve();
+        return new Promise((res) => img.addEventListener("load", res, { once: true }));
+      };
+
+      const nextLayout = () =>
+        new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res)));
 
       onLoad(async () => {
-        await waitFonts();
+        await Promise.all([waitFonts(), waitImage(bigLogo)]);
 
         let tl;
 
@@ -217,31 +224,40 @@
           tl?.kill();
           ScrollTrigger.getById("heroLogoToNav")?.kill();
 
-          // Use current header position as "start" (don’t hardcode 90)
+          gsap.set([bigLogo, navLogo], { clearProps: "opacity,visibility" });
           const headerStartY = Number(gsap.getProperty(header, "y")) || 0;
           const headerEndY = 20;
 
-          // end based on current layout (recomputed on refresh)
-          const scrollEnd = navBlock.getBoundingClientRect().top + window.scrollY;
+          gsap.set(bigLogo, { clearProps: "transform" });
 
-          // reset bigLogo transforms before measuring
-          gsap.set(bigLogo, {clearProps: "transform"});
-
-          // temporarily set header to final position so navLogo rect is correct
-          gsap.set(header, {y: headerEndY});
-
+          gsap.set(header, { y: headerEndY });
           const bigRect = bigLogo.getBoundingClientRect();
           const navRect = navLogo.getBoundingClientRect();
+
+          if (!bigRect.width || !navRect.width) {
+            gsap.set(header, { y: headerStartY });
+            return;
+          }
 
           const scale = navRect.width / bigRect.width;
           const deltaX = navRect.left - bigRect.left;
           const deltaY = navRect.top - bigRect.top;
 
-          // restore header start
-          gsap.set(header, {y: headerStartY});
+          gsap.set(header, { y: headerStartY });
+
+          const scrollEnd = navBlock.getBoundingClientRect().top + window.scrollY;
+
+          const setBigOpacity = gsap.quickSetter(bigLogo, "opacity");
+          const setNavOpacity = gsap.quickSetter(navLogo, "opacity");
+
+          const applyVisibility = (progress) => {
+            const showNav = progress >= 0.98;
+            setNavOpacity(showNav ? 1 : 0);
+            setBigOpacity(showNav ? 0 : 1);
+          };
 
           tl = gsap.timeline({
-            defaults: {ease: "none"},
+            defaults: { ease: "none" },
             scrollTrigger: {
               id: "heroLogoToNav",
               trigger: document.documentElement,
@@ -249,20 +265,33 @@
               end: scrollEnd,
               scrub: true,
               invalidateOnRefresh: true,
+              onUpdate: (self) => applyVisibility(self.progress),
+              onRefresh: (self) => applyVisibility(self.progress),
             },
           });
 
-          tl.to(bigLogo, {x: deltaX, y: deltaY, scale}, 0);
-          tl.to(header, {y: headerEndY}, 0);
+          applyVisibility(tl.scrollTrigger.progress);
 
-          // visibility switch near the end (optional)
-          tl.to(navLogo, {opacity: 1, duration: 0.01}, 0.98);
-          tl.to(bigLogo, {opacity: 0, duration: 0.01}, 0.98);
+          tl.to(bigLogo, { x: deltaX, y: deltaY, scale }, 0);
+          tl.to(header, { y: headerEndY }, 0);
         };
 
+        await nextLayout();
         build();
-        window.addEventListener("resize", () => ScrollTrigger.refresh());
+        ScrollTrigger.refresh();
         ScrollTrigger.addEventListener("refreshInit", build);
+
+        let resizeTimer;
+        const onResize = () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(async () => {
+            await nextLayout();
+            build();
+            ScrollTrigger.refresh();
+          }, 150);
+        };
+
+        window.addEventListener("resize", onResize);
       });
     });
   }
