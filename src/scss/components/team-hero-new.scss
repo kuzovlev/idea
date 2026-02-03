@@ -1,0 +1,58 @@
+.team-hero-section {
+  min-height: 180svh;
+  position: relative;
+
+  .team-scroll-block {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
+  @media (max-width: 767px) {
+    height: 500px;
+    min-height: 90vh;
+  }
+
+  .team_hero-content {
+    position: absolute;
+    height: 80vh;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
+    width: 100%;
+    @media (max-width: 767px) {
+      height: 400px;
+    }
+
+    .team_hero-static-bg {
+      width: 100%;
+      height: 100%;
+      background: #E1DCD5;
+    }
+
+    .team_hero-img-container {
+      position: relative;
+      display: flex;
+
+      .team_hero-substract-img {
+        position: relative;
+        z-index: 2;
+        width: 100%;
+      }
+
+      .team_hero-overlay-blur {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        backdrop-filter: blur(10px);
+        background: #ffffff57;
+        -webkit-backdrop-filter: blur(10px);
+      }
+    }
+  }
+}

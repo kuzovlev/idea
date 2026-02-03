@@ -25,7 +25,6 @@
   }
 
   .video-play {
-    pointer-events: none;
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.9);
     transition: opacity 0.2s ease, transform 0.2s ease;

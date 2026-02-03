@@ -9,7 +9,7 @@
     border: 1px solid #64083280;
     font-size: clamp(
       17px,
-      calc(28px + (28 - 17) * ((100vw - 320px) / (1440 - 320))),
+      calc(17px + (28 - 17) * ((100vw - 360px) / (1440 - 360))),
       28px
     );
     line-height: 1;
@@ -26,4 +26,11 @@
       transform: translateY(0);
     }
   }
+}
+@media (max-width: 767px){
+  .values-wrapper{
+  .value-item{
+    padding: 15px 15px 10px;
+  }
+    }
 }

@@ -1270,3 +1270,74 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS
+}
+
+const videobtn = document.querySelector('.video-play');
+ // = document.querySelector('.bg-video');
+
+videobtn.addEventListener('click', (e) => {
+  // Stop background while playing the main video
+  // bgVideo.pause();
+  const bgVideo = e.target.closest('section').querySelector('video');
+  const src = bgVideo.querySelector('source').src;
+  console.log(isIOS());
+  if (isIOS()) {
+    // iOS: use native fullscreen player
+    const v = document.createElement('video');
+    v.src = src;
+    v.controls = true;
+    v.playsInline = false; // allow fullscreen
+    v.setAttribute('playsinline', ''); // harmless; iOS still can fullscreen from user gesture
+    v.setAttribute('webkit-playsinline', '');
+    document.body.appendChild(v);
+
+    // On iOS, play() from a click is allowed and typically triggers native player
+    v.play().catch(() => {});
+
+    // Cleanup after leaving player (best-effort)
+    v.addEventListener('ended', () => {
+      v.remove();
+      bgVideo.play().catch(() => {});
+    });
+    v.addEventListener('pause', () => {
+      // user may exit fullscreen by pausing; cleanup
+      setTimeout(() => {
+        if (!document.body.contains(v)) return;
+        v.remove();
+        bgVideo.play().catch(() => {});
+      }, 300);
+    });
+
+  } else {
+    // Desktop/Android: open your custom modal
+    openModalWithVideo(src);
+  }
+});
+
+const modal = document.querySelector('.video-modal');
+const modalVideo = modal.querySelector('video');
+const closeBtn = document.querySelector('.video-modal__close');
+const backdrop = document.querySelector('.video-modal__backdrop');
+console.log(modal, modalVideo, closeBtn, backdrop);
+function openModalWithVideo(url) {
+  modal.hidden = false;
+  modal
+  modalVideo.src = url;
+  modalVideo.currentTime = 0;
+  modalVideo.play().catch(() => {});
+}
+
+function closeModal() {
+  modalVideo.pause();
+  modalVideo.removeAttribute('src');
+  modalVideo.load();
+  modal.hidden = true;
+  bgVideo.play().catch(() => {});
+}
+
+closeBtn.addEventListener('click', closeModal);
+backdrop.addEventListener('click', closeModal);

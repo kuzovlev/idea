@@ -92,7 +92,7 @@ main {
 
 .team_video-section {
   position: relative;
-  overflow: hidden;
+  overflow-x: clip;
 
   &:before {
     position: absolute;
@@ -264,6 +264,36 @@ main {
   z-index: -1;
   position: relative;
   text-align: center;
+}
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+}
+
+.video-modal[hidden] {
+  display: none;
+}
+
+.video-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+}
+
+.video-modal__panel {
+  position: relative;
+  max-width: 960px;
+  margin: 5vh auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.team_video-section video {
+  pointer-events: none; /* prevents Safari tap fullscreen */
 }
 @media (prefers-reduced-motion: reduce) {
   .form-modal__backdrop,
