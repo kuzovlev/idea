@@ -10,6 +10,9 @@
   .transforming-logo {
     padding-bottom: 90px;
     max-width: 100%;
+    @media (max-width: 767px){
+      padding-bottom: 30px;
+    }
   }
   .scroll-down{
     font-size: 12px;

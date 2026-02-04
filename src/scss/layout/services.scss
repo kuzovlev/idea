@@ -37,11 +37,12 @@
         border-radius: 10px;
         display: block;
 
-        opacity: 0;
-        transition: opacity 400ms ease;
+        opacity: 1;
+        transform: translateY(0);
+        transition: transform 400ms ease;
+        will-change: transform;
 
         &.is-active {
-          opacity: 1;
           z-index: 2;
         }
       }

@@ -339,7 +339,7 @@
     grid-template-columns: repeat(8, 1fr);
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .grid {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -2719,6 +2719,11 @@ body.nav-open .menu-text__mobile {
   padding-bottom: 90px;
   max-width: 100%;
 }
+@media (max-width: 767px) {
+  .logo-section .transforming-logo {
+    padding-bottom: 30px;
+  }
+}
 .logo-section .scroll-down {
   font-size: 12px;
   line-height: 112%;
@@ -2858,6 +2863,7 @@ body.nav-open .menu-text__mobile {
   position: absolute;
   top: 10px;
   left: 10px;
+  z-index: 2;
 }
 .branch-card:nth-child(even) .branch-name {
   background: #A0D7FF;
@@ -2883,10 +2889,14 @@ body.nav-open .menu-text__mobile {
 .branch-card:hover .branch-card_indicator {
   transform: rotate(45deg);
 }
+.branch-card:hover .branch-card_image {
+  transform: scale(1.15);
+}
 .branch-card .branch-card_image {
   width: 100%;
   height: auto;
   object-fit: cover;
+  transition: all 0.3s ease-out;
 }
 .branch-card .branch-description {
   position: absolute;
@@ -2896,7 +2906,7 @@ body.nav-open .menu-text__mobile {
   align-items: center;
   bottom: 10px;
   padding: 20px 48px 20px 20px;
-  transition: all 0.5s ease-out;
+  transition: all 0.6s cubic-bezier(0, 0.55, 0.45, 1);
   transform: translateX(-100%);
 }
 .branch-card .branch-description .branch-description_text {
@@ -2972,6 +2982,7 @@ body.nav-open .menu-text__mobile {
   font-style: italic;
   font-weight: 800;
   color: black;
+  text-transform: uppercase;
 }
 
 @media (max-width: 1024px) {
@@ -3882,11 +3893,12 @@ video {
   object-fit: cover;
   border-radius: 10px;
   display: block;
-  opacity: 0;
-  transition: opacity 400ms ease;
+  opacity: 1;
+  transform: translateY(0);
+  transition: transform 400ms ease;
+  will-change: transform;
 }
 #services .services-overlay .services-media .services-media__img.is-active {
-  opacity: 1;
   z-index: 2;
 }
 

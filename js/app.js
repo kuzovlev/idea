@@ -435,6 +435,8 @@
     let lastSectionIndex = 0;
     let isInitialized = false;
 
+    const DURATION = 400;
+
     function initializeImage() {
       const visible = Array.from(sections).find((section) => {
         const rect = section.getBoundingClientRect();
@@ -461,36 +463,61 @@
         }
       }
 
+      activeImg.style.transform = "translateY(0)";
+      inactiveImg.style.transform = "translateY(0)";
+      activeImg.classList.add("is-active");
+      inactiveImg.classList.remove("is-active");
+
       isInitialized = true;
     }
 
-    function crossFade(nextSrc) {
+    function scrollSwap(nextSrc, direction /* "down" | "up" */) {
       if (!nextSrc || nextSrc === currentSrc || isAnimating) return;
 
       isAnimating = true;
       inactiveImg.src = nextSrc;
 
-      const startFade = () => {
+      const start = () => {
+        const from = direction === "down" ? "100%" : "-100%";
+        const toOut = direction === "down" ? "-100%" : "100%";
+
+        inactiveImg.style.transition = "none";
+        activeImg.style.transition = "none";
+        inactiveImg.style.transform = `translateY(${from})`;
+        activeImg.style.transform = "translateY(0)";
+        inactiveImg.getBoundingClientRect();
+
+        inactiveImg.style.transition = `transform ${DURATION}ms ease`;
+        activeImg.style.transition = `transform ${DURATION}ms ease`;
+
         inactiveImg.classList.add("is-active");
         activeImg.classList.remove("is-active");
+
+        requestAnimationFrame(() => {
+          inactiveImg.style.transform = "translateY(0)";
+          activeImg.style.transform = `translateY(${toOut})`;
+        });
 
         setTimeout(() => {
           [activeImg, inactiveImg] = [inactiveImg, activeImg];
           currentSrc = nextSrc;
+
+          inactiveImg.style.transition = "none";
+          inactiveImg.style.transform = "translateY(0)";
+
           isAnimating = false;
-        }, 400);
+        }, DURATION);
       };
 
-      if (inactiveImg.complete) startFade();
-      else inactiveImg.onload = startFade;
+      if (inactiveImg.complete) start();
+      else inactiveImg.onload = start;
     }
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (!isInitialized) return;
 
-        const visible = entries
-          .filter((e) => e.isIntersecting && e.intersectionRatio >= 0.5);
+        const visible = entries.filter((e) => e.isIntersecting && e.intersectionRatio >= 0.5);
 
         const currentScrollY = window.scrollY;
         const scrollingDown = currentScrollY > lastScrollY;
@@ -507,15 +534,8 @@
           const currentRatio = currentEntry?.intersectionRatio || 0;
 
           const previousSections = visible
-            .filter(e => {
-              const idx = Array.from(sections).indexOf(e.target);
-              return idx < lastSectionIndex;
-            })
-            .sort((a, b) => {
-              const indexA = Array.from(sections).indexOf(a.target);
-              const indexB = Array.from(sections).indexOf(b.target);
-              return indexB - indexA; // Highest index first (closest previous)
-            });
+            .filter(e => Array.from(sections).indexOf(e.target) < lastSectionIndex)
+            .sort((a, b) => Array.from(sections).indexOf(b.target) - Array.from(sections).indexOf(a.target));
 
           if (previousSections.length && previousSections[0].intersectionRatio > currentRatio) {
             topSection = previousSections[0].target;
@@ -529,11 +549,10 @@
         if (Math.abs(topSectionIndex - lastSectionIndex) > 1) return;
 
         lastSectionIndex = topSectionIndex;
-        crossFade(topSection.dataset.img);
+        scrollSwap(topSection.dataset.img, scrollingDown ? "down" : "up");
       },
-      {threshold: [0, 0.5, 0.75, 1]}
+      { threshold: [0, 0.5, 0.75, 1] }
     );
-
     initializeImage();
     sections.forEach((s) => observer.observe(s));
   }
@@ -600,7 +619,7 @@
 
           const baseStart = vh() * 1.2;
           const startOffsets = [+0.15, -0.25, +0.1, -0.2];
-          const speeds = [1.1, 1.0, 1.6, 2.2];
+          const speeds = [1.1, 1.3, 1.6, 1.2];
 
           logos.forEach((el, i) => {
             const offset = startOffsets[i] ?? 0;
@@ -658,9 +677,52 @@
       setActive(rows[0]);
 
       const isFinePointer = window.matchMedia?.("(hover: hover) and (pointer: fine)")?.matches;
+      if (!isFinePointer) {
+        rows.forEach((row) => {
+          row.addEventListener("pointerup", (e) => {
+            e.preventDefault?.();
+            setActive(row);
+          });
+        });
+        return;
+      }
+
+      let lastX = null;
+      let lastY = null;
+      let rafPending = false;
+
+      const updateActiveFromPoint = () => {
+        rafPending = false;
+        if (lastX == null || lastY == null) return;
+
+        // Find what is currently under the cursor
+        const el = document.elementFromPoint(lastX, lastY);
+        if (!el) return;
+
+        const row = el.closest?.(".clients-row");
+        if (row && rows.includes(row)) setActive(row);
+      };
+
+      window.addEventListener("pointermove", (e) => {
+        lastX = e.clientX;
+        lastY = e.clientY;
+        // optional: update immediately on move
+        if (!rafPending) {
+          rafPending = true;
+          requestAnimationFrame(updateActiveFromPoint);
+        }
+      }, { passive: true });
+
+      // Key part: update while scrolling, using the last known pointer position
+      window.addEventListener("scroll", () => {
+        if (!rafPending) {
+          rafPending = true;
+          requestAnimationFrame(updateActiveFromPoint);
+        }
+      }, { passive: true });
 
       rows.forEach((row) => {
-        if (isFinePointer) row.addEventListener("pointerenter", () => setActive(row));
+        row.addEventListener("pointerenter", () => setActive(row));
         row.addEventListener("pointerup", (e) => {
           e.preventDefault?.();
           setActive(row);
